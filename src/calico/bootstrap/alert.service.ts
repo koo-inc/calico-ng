@@ -31,6 +31,7 @@ export class AlertService {
 
   danger(body: string, opts?: AlertOptions): void {
     this.addMessage(this.createMessage('danger', body, opts));
+    
   }
 
   private createMessage(type: string, body: string, opts?: AlertOptions): AlertMessage {
