@@ -42,4 +42,4 @@ export class CalicoUiModule {
   }
 }
 
-export { AlertService } from "./alert.service";
+export { AlertService, AlertConfig, AlertOptions, AlertMessage } from "./alert.service";

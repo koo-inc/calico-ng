@@ -34,4 +34,4 @@ export class CalicoSearchModule {
   }
 }
 
-export { SearchService, SearchContext } from './search.service';
+export { SearchService, SearchContext, SearchContextConfig } from './search.service';
