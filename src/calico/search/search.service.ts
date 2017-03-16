@@ -3,8 +3,8 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { FormGroup, AbstractControl } from "@angular/forms";
 import { Observable, Subscription } from "rxjs";
 
-import { SerializeService } from "../util/serialize.service";
-import { SessionStorageService } from "../util/session-storage.service";
+import { SerializeService } from "../core";
+import { SessionStorageService } from "../core";
 
 @Injectable()
 export class SearchService {

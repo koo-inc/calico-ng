@@ -5,7 +5,7 @@ import { Injectable, Inject, OpaqueToken } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { Http, Headers, RequestOptions } from "@angular/http";
 
-import { AlertService } from "../bootstrap/alert.service";
+import { AlertService } from "../ui/alert.service";
 
 export class MessageConfig {
   [id: string]: string
