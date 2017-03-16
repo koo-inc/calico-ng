@@ -36,9 +36,9 @@ export class AlertService {
   private createMessage(type: string, body: string, opts?: AlertOptions): AlertMessage {
     let message: AlertMessage = Object.assign(
       {},
-      this.config.common,
-      this.config[type],
-      opts,
+      this.config.common || {},
+      this.config[type] || {},
+      opts || {},
       { type: type, body: body },
     ) as AlertMessage;
     message.position = this.normalizePosition(message.position);
