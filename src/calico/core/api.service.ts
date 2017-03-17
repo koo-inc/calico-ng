@@ -2,7 +2,7 @@ import { Observable } from "rxjs";
 import 'rxjs/add/operator/map'
 
 import { Injectable, Inject, OpaqueToken, Pipe, PipeTransform } from "@angular/core";
-import { FormGroup } from "@angular/forms";
+import { AbstractControl } from "@angular/forms";
 import { Http, Headers, RequestOptions } from "@angular/http";
 
 import { AlertService } from "../ui/alert.service";
@@ -18,10 +18,10 @@ export class Api {
   constructor(private http: Http, private alert: AlertService, @Inject(MESSAGE_CONFIG) private messages: MessageConfig) { }
 
   submit<T> (url: string): Observable<T>;
-  submit<T> (url: string, form: FormGroup): Observable<T>;
+  submit<T> (url: string, form: AbstractControl): Observable<T>;
   submit<T> (url: string, form: any): Observable<T>;
   submit<T> (url: string, form?: any): Observable<T> {
-    if(form instanceof FormGroup && form.invalid){
+    if(form instanceof AbstractControl && form.invalid){
       this.alert.warning(this.messages['invalidForm'] || '入力値に問題があります。');
       return Observable.empty();
     }
@@ -30,7 +30,7 @@ export class Api {
     headers.append('Content-Type', 'application/json');
     let options = new RequestOptions({headers: headers});
 
-    if (form instanceof FormGroup) {
+    if (form instanceof AbstractControl) {
       this.submittingForms.push(form);
       return this.http.post(url, JSON.stringify(form.value), options)
         .map((req, _) => req.json() as T)
@@ -73,9 +73,9 @@ export class Api {
     }
   }
 
-  private submittingForms: FormGroup[] = [];
+  private submittingForms: AbstractControl[] = [];
 
-  isSubmitting(form: FormGroup): boolean {
+  isSubmitting(form: AbstractControl): boolean {
     return this.submittingForms.indexOf(form) != -1;
   }
 }
