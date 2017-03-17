@@ -1,19 +1,46 @@
-import { Component, Input, ElementRef, Renderer } from '@angular/core';
+import { Component, Input, ContentChild } from '@angular/core';
 
 @Component({
-  selector: '[c-panel]',
+  selector: 'c-panel-header',
+  template: '<ng-content></ng-content>'
+})
+export class PanelHeaderComponent {}
+
+@Component({
+  selector: 'c-panel-footer',
+  template: '<ng-content></ng-content>'
+})
+export class PanelFooterComponent {}
+
+@Component({
+  selector: 'c-panel',
   template: `
-    <div class="panel-heading">{{heading}}</div>
-    <div class="panel-body">
-      <ng-content></ng-content>
+    <div class="panel panel-default">
+      <div class="panel-heading" *ngIf="showHeader">
+        {{title}}
+        <ng-content select="c-panel-header"></ng-content>
+      </div>
+      <div class="panel-body">
+        <ng-content></ng-content>
+      </div>
+      <div class="panel-footer" *ngIf="showFooter">
+        <ng-content select="c-panel-footer"></ng-content>
+      </div>
     </div>
   `
 })
 export class PanelComponent {
-  @Input('c-panel') heading: string;
+  @Input() title: string;
 
-  constructor(el: ElementRef, renderer: Renderer) {
-    renderer.setElementClass(el.nativeElement, "panel", true);
-    renderer.setElementClass(el.nativeElement, "panel-default", true);
+  @ContentChild(PanelHeaderComponent) header: PanelHeaderComponent;
+  @ContentChild(PanelFooterComponent) footer: PanelFooterComponent;
+
+  get showHeader(): boolean {
+    return this.header != null || this.title != null;
   }
+
+  get showFooter(): boolean {
+    return this.footer != null;
+  }
+
 }

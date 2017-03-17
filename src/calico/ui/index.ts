@@ -4,7 +4,7 @@ import { CommonModule } from "@angular/common";
 import { InfoTableDirective, ListTableDirective, } from './table.directive';
 import { ButtonDirective } from "./button.directive";
 import { GlyphiconDirective } from "./glyphicon.directive";
-import { PanelComponent } from "./panel.component";
+import { PanelComponent, PanelHeaderComponent, PanelFooterComponent } from "./panel.component";
 import { ColsComponent } from "./cols.component";
 import { AlertComponent, AlertService } from "./alert.service";
 
@@ -18,6 +18,8 @@ import { AlertComponent, AlertService } from "./alert.service";
     ButtonDirective,
     GlyphiconDirective,
     PanelComponent,
+    PanelHeaderComponent,
+    PanelFooterComponent,
     ColsComponent,
     AlertComponent,
   ],
@@ -27,6 +29,8 @@ import { AlertComponent, AlertService } from "./alert.service";
     ButtonDirective,
     GlyphiconDirective,
     PanelComponent,
+    PanelHeaderComponent,
+    PanelFooterComponent,
     ColsComponent,
     AlertComponent,
   ]
