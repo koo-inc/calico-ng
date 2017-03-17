@@ -6,7 +6,7 @@ import { CalicoFormModule } from "../form/index";
 
 import { SortComponent } from "./sort.component";
 import { PagerComponent } from "./pager.component";
-import { SearchService } from "./search.service";
+import { SearchService, SearchFormBuilder } from "./search.service";
 
 @NgModule({
   imports: [
@@ -29,9 +29,10 @@ export class CalicoSearchModule {
       ngModule: CalicoSearchModule,
       providers: [
         SearchService,
+        SearchFormBuilder,
       ]
     };
   }
 }
 
-export { SearchService, SearchContext, SearchContextConfig } from './search.service';
+export { SearchService, SearchFormBuilder, SearchContext, SearchContextConfig } from './search.service';

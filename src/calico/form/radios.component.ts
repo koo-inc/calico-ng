@@ -53,8 +53,7 @@ export class RadiosComponent extends FormItem implements OnChanges {
 
   writeValue(value: any): void {
     super.writeValue(value);
-    let key = this.getOptionKey(value);
-    this.setSelected(key);
+    this.setSelected(value);
   }
 
   private click(option: RadioOption) {
@@ -107,7 +106,8 @@ export class RadiosComponent extends FormItem implements OnChanges {
     return option[this.optionValue];
   }
 
-  private setSelected(key: any){
+  private setSelected(value: any){
+    let key = this.getOptionKey(value);
     this.innerOptions.forEach((option) => {
       option.selected = option.key == key;
     });

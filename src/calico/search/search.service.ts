@@ -1,6 +1,6 @@
 import { Injectable, EventEmitter } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { FormGroup, AbstractControl } from "@angular/forms";
+import { FormGroup, AbstractControl, FormBuilder } from "@angular/forms";
 import { Observable, Subscription } from "rxjs";
 
 import { SerializeService } from "../core";
@@ -17,22 +17,49 @@ export class SearchService {
   storeFormValue(key: string, value: any): void {
     this.sessionStorageService.store(this.createKey(key), value);
   }
+
   clearFormValue(key: string): void {
     this.sessionStorageService.remove(this.createKey(key));
   }
+
   restoreFormValue(key: string): any {
     return this.sessionStorageService.restore(this.createKey(key));
   }
+
   restoreAsFragment(key: string): string {
     let formValue = this.restoreFormValue(key);
     if(formValue == null) return null;
     return this.serializeService.serialize(formValue);
   }
 
-  createKey(key: string): string {
+  private createKey(key: string): string {
     return 'search-form-' + key;
   }
 
+}
+
+@Injectable()
+export class SearchFormBuilder {
+
+  constructor(
+    private fb: FormBuilder,
+  ) {}
+
+  rootGroup(data: any, controlsConfig: { [key: string]: any; }, extra?: { [key: string]: any; }): FormGroup {
+    if(data._page != null){
+      controlsConfig['_page'] = this.fb.group({
+        no: [data._page.no],
+        perPage: [data._page.perPage],
+      });
+    }
+    if(data._sort != null){
+      controlsConfig['_sort'] = this.fb.group({
+        prop: [data._sort.prop],
+        type: [data._sort.type],
+      });
+    }
+    return this.fb.group(controlsConfig, extra);
+  }
 }
 
 @Injectable()
@@ -151,7 +178,7 @@ export class SearchContext {
     this.search();
   }
 
-  getKey(): string {
+  private getKey(): string {
     return this.route.pathFromRoot
       .map(r => r.url.value)
       .flatten()

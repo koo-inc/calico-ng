@@ -38,7 +38,7 @@ export class PagerComponent implements OnInit, OnDestroy {
     private searchContext: SearchContext,
   ) {}
 
-  info: PageInfo;
+  private info: PageInfo;
 
   perPageOptions: any[] = [
     { id: 10, name: '10件' },
@@ -143,7 +143,7 @@ export class PagerComponent implements OnInit, OnDestroy {
   }
 }
 
-export interface PageInfo {
+interface PageInfo {
   recordCount: number;
   perPage: number;
   currentPageNo: number;

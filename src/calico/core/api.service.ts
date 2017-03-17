@@ -21,6 +21,10 @@ export class Api {
   submit<T> (url: string, form: FormGroup): Observable<T>;
   submit<T> (url: string, form: any): Observable<T>;
   submit<T> (url: string, form?: any): Observable<T> {
+    if(form instanceof FormGroup && form.invalid){
+      this.alert.warning(this.messages['invalidForm'] || '入力値に問題があります。');
+      return Observable.empty();
+    }
     let body = JSON.stringify(form instanceof FormGroup ? form.value : form);
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');

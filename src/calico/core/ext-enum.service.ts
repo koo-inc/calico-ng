@@ -26,7 +26,21 @@ export class ExtEnumService {
     }
   }
 
+  setValues(target: {}, ...keys: string[]): void {
+    if(keys == null || keys.length == 0 || target == null){
+      return;
+    }
+    this.values(...keys).subscribe(data => {
+      keys.forEach(key => {
+        target[key] = data[key];
+      });
+    });
+  }
+
   values(...keys: string[]): Observable<ExtEnumData> {
+    if(keys == null || keys.length == 0){
+      return Observable.of({});
+    }
     let keysForApi: string[] = [];
     let cachedData: ExtEnumData = new ExtEnumData();
     for(let key of keys){
