@@ -75,7 +75,6 @@ export class SearchContext {
   public config: SearchContextConfig;
   public form: FormGroup;
   public result: any;
-  public searching: boolean = false;
 
   public searched: EventEmitter<any> = new EventEmitter();
 
@@ -127,7 +126,6 @@ export class SearchContext {
   }
 
   private executeSearch(): void {
-    this.searching = true;
     let formValue = Object.clone(this.form.value, true);
     this.config.search().subscribe(data => {
       this.result = data;
@@ -138,7 +136,6 @@ export class SearchContext {
       }else{
         this.searchService.storeFormValue(this.getKey(), formValue);
       }
-      this.searching = false;
     });
   }
 

@@ -1,7 +1,7 @@
 import { Observable } from "rxjs";
 import 'rxjs/add/operator/map'
 
-import { Injectable, Inject, OpaqueToken } from "@angular/core";
+import { Injectable, Inject, OpaqueToken, Pipe, PipeTransform } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { Http, Headers, RequestOptions } from "@angular/http";
 
@@ -25,51 +25,69 @@ export class Api {
       this.alert.warning(this.messages['invalidForm'] || '入力値に問題があります。');
       return Observable.empty();
     }
-    let body = JSON.stringify(form instanceof FormGroup ? form.value : form);
+
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     let options = new RequestOptions({headers: headers});
 
-    let req = this.http.post(url, body, options)
-      .map((req, _) => req.json() as T);
-
     if (form instanceof FormGroup) {
-      return req.catch((e: any, caught: Observable<any>): Observable<any> => {
-        let errors: any;
-        try {
-          errors = e.json();
-        }
-        catch (e) {
-          console.error(e);
-          this.alert.warning(this.messages['internalServerError'] || '500 Internal Server Error');
+      this.submittingForms.push(form);
+      return this.http.post(url, JSON.stringify(form.value), options)
+        .map((req, _) => req.json() as T)
+        .do(() => { this.submittingForms.remove(f => f === form); })
+        .catch((e: any, caught: Observable<any>): Observable<any> => {
+          this.submittingForms.remove(f => f === form);
+          let errors: any;
+          try {
+            errors = e.json();
+          } catch (e) {
+            console.error(e);
+            this.alert.warning(this.messages['internalServerError'] || '500 Internal Server Error');
+            throw e;
+          }
+          Object.keys(errors).forEach(key => {
+            let violation = errors[key].reduce((a:any, b:string) => {a[b] = true; return a}, {});
+            let ctrl = form.get(key);
+            if (ctrl != null) {
+              ctrl.setErrors(violation);
+            } else {
+              let message = errors[key].map((msg: string) => this.messages[msg] || msg ).join('\n');
+              this.alert.warning(message);
+            }
+          });
           throw e;
-        }
-        Object.keys(errors).forEach(key => {
-          let violation = errors[key].reduce((a:any, b:string) => {a[b] = true; return a}, {});
-          let ctrl = form.get(key);
-          if (ctrl != null) {
-            ctrl.setErrors(violation);
-          }
-          else {
-            let message = errors[key].map((msg: string) => this.messages[msg] || msg ).join('\n');
-            this.alert.warning(message);
-          }
         });
-        throw e;
-      });
     }
     else {
-      return req.catch((e: any, caught: Observable<any>): Observable<any> => {
-        let errors: any;
-        try {
-          e.json();
-        }
-        catch (e) {
-          console.error(e);
-          this.alert.warning(this.messages['internalServerError'] || '500 Internal Server Error');
-        }
-        throw e;
-      });
+      return this.http.post(url, JSON.stringify(form), options)
+        .map((req, _) => req.json() as T)
+        .catch((e: any, caught: Observable<any>): Observable<any> => {
+          try {
+            e.json();
+          } catch (e) {
+            console.error(e);
+            this.alert.warning(this.messages['internalServerError'] || '500 Internal Server Error');
+          }
+          throw e;
+        });
     }
   }
+
+  private submittingForms: FormGroup[] = [];
+
+  isSubmitting(form: FormGroup): boolean {
+    return this.submittingForms.indexOf(form) != -1;
+  }
+}
+
+@Pipe({ name: 'submitting', pure: false })
+export class SubmittingPipe implements PipeTransform {
+  constructor(
+    private api: Api,
+  ) {}
+
+  transform(value: any, ...args: any[]): any {
+    return this.api.isSubmitting(value);
+  }
+
 }

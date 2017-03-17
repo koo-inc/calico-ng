@@ -3,15 +3,17 @@ import { NgModule, ModuleWithProviders } from "@angular/core";
 import { LocalStorageService } from "./local-storage.service";
 import { SessionStorageService } from "./session-storage.service";
 import { SerializeService } from "./serialize.service";
-import { Api } from "./api.service";
+import { Api, SubmittingPipe } from "./api.service";
 import { ExtEnumService } from "./ext-enum.service";
 
 @NgModule({
   imports: [
   ],
   declarations: [
+    SubmittingPipe,
   ],
   exports: [
+    SubmittingPipe,
   ]
 })
 export class CalicoCoreModule {
