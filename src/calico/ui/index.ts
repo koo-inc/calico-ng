@@ -1,16 +1,19 @@
 import { NgModule, ModuleWithProviders } from "@angular/core";
 import { CommonModule } from "@angular/common";
+import { ModalModule } from "ng2-bootstrap";
 
 import { InfoTableDirective, ListTableDirective, } from './table.directive';
 import { ButtonDirective } from "./button.directive";
 import { GlyphiconDirective } from "./glyphicon.directive";
 import { PanelComponent, PanelHeaderComponent, PanelFooterComponent } from "./panel.component";
+import { ModalComponent, ModalHeaderComponent, ModalFooterComponent } from "./modal.component";
 import { ColsComponent } from "./cols.component";
 import { AlertComponent, AlertService } from "./alert.service";
 
 @NgModule({
   imports: [
     CommonModule,
+    ModalModule,
   ],
   declarations: [
     InfoTableDirective,
@@ -20,6 +23,9 @@ import { AlertComponent, AlertService } from "./alert.service";
     PanelComponent,
     PanelHeaderComponent,
     PanelFooterComponent,
+    ModalComponent,
+    ModalHeaderComponent,
+    ModalFooterComponent,
     ColsComponent,
     AlertComponent,
   ],
@@ -31,6 +37,9 @@ import { AlertComponent, AlertService } from "./alert.service";
     PanelComponent,
     PanelHeaderComponent,
     PanelFooterComponent,
+    ModalComponent,
+    ModalHeaderComponent,
+    ModalFooterComponent,
     ColsComponent,
     AlertComponent,
   ]
@@ -47,3 +56,4 @@ export class CalicoUiModule {
 }
 
 export { AlertService, AlertConfig, AlertOptions, AlertMessage } from "./alert.service";
+export { ModalComponent } from "./modal.component";
