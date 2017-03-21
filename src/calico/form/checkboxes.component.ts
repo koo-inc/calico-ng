@@ -54,7 +54,7 @@ export class CheckboxesComponent extends FormItem implements OnChanges {
     this.setSelected(value);
   }
 
-  private click(option: CheckboxOption) {
+  private click(option: CheckboxOption): void {
     option.selected = !option.selected;
     this.value = this.getValues();
   }
@@ -68,7 +68,7 @@ export class CheckboxesComponent extends FormItem implements OnChanges {
     }
   }
 
-  private initOptions() {
+  private initOptions(): void {
     this.innerOptions = [];
     if(this.options == null || this.options.length == 0){
       return;
@@ -80,19 +80,19 @@ export class CheckboxesComponent extends FormItem implements OnChanges {
       this.innerOptions.push({ key: key, label: label, value: value, selected: false });
     }
   }
-  private getOptionKey(option: any){
+  private getOptionKey(option: any): any {
     if(this.optionKey == null || !Object.isObject(option)){
       return option;
     }
     return option[this.optionKey];
   }
-  private getOptionLabel(option: any){
+  private getOptionLabel(option: any): string {
     if(this.optionLabel == null || !Object.isObject(option)){
       return option;
     }
     return option[this.optionLabel];
   }
-  private getOptionValue(option: any){
+  private getOptionValue(option: any): any {
     if(this.optionValue == null || !Object.isObject(option)){
       return option;
     }
@@ -101,18 +101,18 @@ export class CheckboxesComponent extends FormItem implements OnChanges {
 
   private getValues(): any[] {
     return this.innerOptions
-      .filter((e: any) => e.selected)
-      .map((e: any) => e.value);
+      .filter((e: CheckboxOption) => e.selected)
+      .map((e: CheckboxOption) => e.value);
   }
-  private setSelected(value: any) {
+  private setSelected(value: any): void {
     if(value == null || !Object.isArray(value) || value.length == 0){
       return;
     }
     (<any[]>value)
       .map((e: any) => this.getOptionKey(e))
-      .map((key: any) => this.innerOptions.find((e: any) => e.key == key))
-      .filter((option: any) => option != null)
-      .forEach((option: any) => {option.selected = true;})
+      .map((key: any) => this.innerOptions.find((e: CheckboxOption) => e.key == key))
+      .filter((option: CheckboxOption) => option != null)
+      .forEach((option: CheckboxOption) => {option.selected = true;})
   }
 
 }

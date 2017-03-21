@@ -1,5 +1,6 @@
 import { Component, forwardRef, Injector, Input, ViewChild, TemplateRef } from '@angular/core';
 import {NG_VALUE_ACCESSOR} from '@angular/forms';
+import { PopoverDirective } from "ng2-bootstrap";
 import { FormItem } from "./item";
 
 // https://github.com/valor-software/ng2-bootstrap/issues/455
@@ -146,7 +147,7 @@ export class DatepickerComponent extends FormItem {
     return value.format('{yyyy}/{MM}/{dd}');
   }
 
-  @ViewChild('popover') popover: any;
+  @ViewChild('popover') popover: PopoverDirective;
 
   keepFlag = false;
 

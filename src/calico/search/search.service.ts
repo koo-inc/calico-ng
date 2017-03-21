@@ -78,7 +78,7 @@ export class SearchContext {
 
   public searched: EventEmitter<any> = new EventEmitter();
 
-  private lastFragment: any;
+  private lastFragment: string;
   private lastFormValue: any;
 
   _subscriptions: Subscription[] = [];

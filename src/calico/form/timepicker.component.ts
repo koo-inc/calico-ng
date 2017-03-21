@@ -1,5 +1,6 @@
 import { Component, forwardRef, Injector, Input, ViewChild } from '@angular/core';
 import {NG_VALUE_ACCESSOR} from '@angular/forms';
+import { PopoverDirective } from "ng2-bootstrap";
 import { FormItem } from "./item";
 
 @Component({
@@ -136,7 +137,7 @@ export class TimepickerComponent extends FormItem {
     return value.format('{HH}:{mm}');
   }
 
-  @ViewChild('popover') popover: any;
+  @ViewChild('popover') popover: PopoverDirective;
 
   keepFlag = false;
 

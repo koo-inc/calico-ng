@@ -67,7 +67,7 @@ export class AlertService {
   }
 
   private removeMessage(message: any): void {
-    this.messages[message.position].remove((e: any) => e.key == message.key);
+    this.messages[message.position].remove((e: AlertMessage) => e.key == message.key);
   }
 }
 

@@ -61,7 +61,7 @@ export class SelectComponent extends FormItem implements OnChanges {
   set selectValue(key: any) {
     if (key !== this.innerSelectValue) {
       this.innerSelectValue = key;
-      let option = this.innerOptions.find((e: any) => e.key == key);
+      let option = this.innerOptions.find((e: SelectOption) => e.key == key);
       this.value = option != null ? option.value : null;
     }
   }
