@@ -136,7 +136,7 @@ export class TimepickerComponent extends FormItem {
     return value.format('{HH}:{mm}');
   }
 
-  @ViewChild('popover') popover;
+  @ViewChild('popover') popover: any;
 
   keepFlag = false;
 
@@ -152,7 +152,7 @@ export class TimepickerComponent extends FormItem {
     this.popover.show();
   }
 
-  onBlur($event): void {
+  onBlur($event: any): void {
     if(this.keepFlag){
       $event.target.focus();
       this.keepFlag = false;

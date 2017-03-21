@@ -78,8 +78,8 @@ export class SearchContext {
 
   public searched: EventEmitter<any> = new EventEmitter();
 
-  private lastFragment;
-  private lastFormValue;
+  private lastFragment: any;
+  private lastFormValue: any;
 
   _subscriptions: Subscription[] = [];
   set subscription(subription: Subscription) {
@@ -177,10 +177,10 @@ export class SearchContext {
 
   private getKey(): string {
     return this.route.pathFromRoot
-      .map(r => r.url.value)
+      .map((r: any) => r.url.value)
       .flatten()
-      .map(v => v.path)
-      .filter(v => v != null && v != '')
+      .map((v: any) => v.path)
+      .filter((v: any) => v != null && v != '')
       .join('/');
   }
 

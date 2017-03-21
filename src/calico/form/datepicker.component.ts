@@ -146,7 +146,7 @@ export class DatepickerComponent extends FormItem {
     return value.format('{yyyy}/{MM}/{dd}');
   }
 
-  @ViewChild('popover') popover;
+  @ViewChild('popover') popover: any;
 
   keepFlag = false;
 
@@ -162,7 +162,7 @@ export class DatepickerComponent extends FormItem {
     this.popover.show();
   }
 
-  onBlur($event): void {
+  onBlur($event: any): void {
     if(this.keepFlag){
       $event.target.focus();
       this.keepFlag = false;

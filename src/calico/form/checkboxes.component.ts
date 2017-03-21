@@ -101,18 +101,18 @@ export class CheckboxesComponent extends FormItem implements OnChanges {
 
   private getValues(): any[] {
     return this.innerOptions
-      .filter((e) => e.selected)
-      .map((e) => e.value);
+      .filter((e: any) => e.selected)
+      .map((e: any) => e.value);
   }
   private setSelected(value: any) {
     if(value == null || !Object.isArray(value) || value.length == 0){
       return;
     }
     (<any[]>value)
-      .map((e) => this.getOptionKey(e))
-      .map((key) => this.innerOptions.find((e) => e.key == key))
-      .filter((option) => option != null)
-      .forEach((option: CheckboxOption) => {option.selected = true;})
+      .map((e: any) => this.getOptionKey(e))
+      .map((key: any) => this.innerOptions.find((e: any) => e.key == key))
+      .filter((option: any) => option != null)
+      .forEach((option: any) => {option.selected = true;})
   }
 
 }

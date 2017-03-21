@@ -17,7 +17,7 @@ export class ColsComponent {
       this._cols = [];
       return;
     }
-    this._cols = value.map((e) => {
+    this._cols = value.map((e: any) => {
       if(e == null) return '';
       if(Object.isNumber(e)) return e + '%';
       return e.toString();

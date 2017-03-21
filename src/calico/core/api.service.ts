@@ -34,9 +34,9 @@ export class Api {
       this.submittingForms.push(form);
       return this.http.post(url, JSON.stringify(form.value), options)
         .map((req, _) => req.json() as T)
-        .do(() => { this.submittingForms.remove(f => f === form); })
+        .do(() => { this.submittingForms.remove((f: any) => f === form); })
         .catch((e: any, caught: Observable<any>): Observable<any> => {
-          this.submittingForms.remove(f => f === form);
+          this.submittingForms.remove((f: any) => f === form);
           let errors: any;
           try {
             errors = e.json();
