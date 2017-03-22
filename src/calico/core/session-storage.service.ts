@@ -4,21 +4,21 @@ import {SerializeService} from "./serialize.service";
 export interface SessionStorageServiceConfig {
   storage?: Storage;
   prefix?: string;
-  deployedAt?: string;
+  version?: string;
 }
 
 @Injectable()
 export class SessionStorageService {
   private sessionStorage: Storage;
   private prefix: string;
-  private deployedAt: string;
+  private version: string;
 
   constructor(private serializeService: SerializeService, injector: Injector) {
     let config: SessionStorageServiceConfig = injector.get("SessionStorageServiceConfig", null);
     if (config != null) {
       this.sessionStorage = config.storage;
       this.prefix = config.prefix;
-      this.deployedAt = config.deployedAt;
+      this.version = config.version;
     }
 
     if (this.sessionStorage == null && 'sessionStorage' in global) {
@@ -31,53 +31,53 @@ export class SessionStorageService {
       this.prefix = '';
     }
 
-    if (this.deployedAt == null) {
-      this.deployedAt = Date.now() + '';
+    if (this.version == null) {
+      this.version = Date.now() + '';
     }
   }
 
   store(key: string, value: any): void;
-  store(key: string, value: any, withDeployedAt: boolean): void;
-  store(key: string, value: any, withDeployedAt?: boolean): void {
-    key = this.createKey(key, withDeployedAt);
+  store(key: string, value: any, withVersion: boolean): void;
+  store(key: string, value: any, withVersion?: boolean): void {
+    key = this.createKey(key, withVersion);
     this.sessionStorage.setItem(key, this.serializeService.serialize(value));
   }
   restore(key: string): any;
-  restore(key: string, withDeployedAt: boolean): any;
-  restore(key: string, withDeployedAt?: boolean): any {
-    return this.serializeService.deserialize(this.restoreRawData(key, withDeployedAt));
+  restore(key: string, withVersion: boolean): any;
+  restore(key: string, withVersion?: boolean): any {
+    return this.serializeService.deserialize(this.restoreRawData(key, withVersion));
   }
   restoreRawData(key: string): string;
-  restoreRawData(key: string, withDeployedAt: boolean): string;
-  restoreRawData(key: string, withDeployedAt?: boolean): string {
-    key = this.createKey(key, withDeployedAt);
+  restoreRawData(key: string, withVersion: boolean): string;
+  restoreRawData(key: string, withVersion?: boolean): string {
+    key = this.createKey(key, withVersion);
     return this.sessionStorage.getItem(key);
   }
 
   remove(key: string): void;
-  remove(key: string, withDeployedAt: boolean): void;
-  remove(key: string, withDeployedAt?: boolean): void {
-    key = this.createKey(key, withDeployedAt);
+  remove(key: string, withVersion: boolean): void;
+  remove(key: string, withVersion?: boolean): void {
+    key = this.createKey(key, withVersion);
     this.sessionStorage.removeItem(key);
   }
 
   clear(): void;
   clear(matchKey: string): void;
-  clear(matchKey: string, withDeployedAt: boolean): void;
-  clear(matchKey?: string, withDeployedAt?: boolean): void {
-    matchKey = this.createKey(matchKey == null ? '' : matchKey, withDeployedAt);
+  clear(matchKey: string, withVersion: boolean): void;
+  clear(matchKey?: string, withVersion?: boolean): void {
+    matchKey = this.createKey(matchKey == null ? '' : matchKey, withVersion);
     this.removeMatched(matchKey);
   }
 
-  clearByDeployedAt(deployedAt: string) {
-    this.removeMatched(this.prefix + deployedAt + '-');
+  clearByVersion(version: string) {
+    this.removeMatched(this.prefix + version + '-');
   }
 
-  private keyPrefix(withDeployedAt?: boolean): string {
-    return withDeployedAt === true ? this.prefix + this.deployedAt + '-' : this.prefix;
+  private keyPrefix(withVersion?: boolean): string {
+    return withVersion === true ? this.prefix + this.version + '-' : this.prefix;
   }
-  private createKey(key: string, withDeployedAt?: boolean): string {
-    return this.keyPrefix(withDeployedAt) + key;
+  private createKey(key: string, withVersion?: boolean): string {
+    return this.keyPrefix(withVersion) + key;
   }
 
   private removeMatched(matchKey: string): void {
