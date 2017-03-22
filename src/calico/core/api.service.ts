@@ -30,47 +30,34 @@ export class Api {
     headers.append('Content-Type', 'application/json');
     let options = new RequestOptions({headers: headers});
 
-    if (form instanceof AbstractControl) {
-      this.submittingForms.push(form);
-      return this.http.post(url, JSON.stringify(form.value), options)
-        .map((req, _) => req.json() as T)
-        .do(() => { this.submittingForms.remove((f: AbstractControl) => f === form); })
-        .catch((e: any, caught: Observable<any>): Observable<any> => {
-          this.submittingForms.remove((f: AbstractControl) => f === form);
-          let errors: any;
-          try {
-            errors = e.json();
-          } catch (e) {
-            console.error(e);
-            this.alert.warning(this.messages['internalServerError'] || '500 Internal Server Error');
-            throw e;
-          }
-          Object.keys(errors).forEach(key => {
-            let violation = errors[key].reduce((a:any, b:string) => {a[b] = true; return a}, {});
-            let ctrl = form.get(key);
-            if (ctrl != null) {
-              ctrl.setErrors(violation);
-            } else {
-              let message = errors[key].map((msg: string) => this.messages[msg] || msg ).join('\n');
-              this.alert.warning(message);
-            }
-          });
+    form = form instanceof AbstractControl ? form : {value: form, get: (key: string): any => null};
+
+    this.submittingForms.push(form);
+    return this.http.post(url, JSON.stringify(form.value), options)
+      .map((req, _) => req.json() as T)
+      .do(() => { this.submittingForms.remove((f: AbstractControl) => f === form); })
+      .catch((e: any, caught: Observable<any>): Observable<any> => {
+        this.submittingForms.remove((f: AbstractControl) => f === form);
+        let errors: any;
+        try {
+          errors = e.json();
+        } catch (e) {
+          console.error(e);
+          this.alert.warning(this.messages['internalServerError'] || '500 Internal Server Error');
           throw e;
-        });
-    }
-    else {
-      return this.http.post(url, JSON.stringify(form), options)
-        .map((req, _) => req.json() as T)
-        .catch((e: any, caught: Observable<any>): Observable<any> => {
-          try {
-            e.json();
-          } catch (e) {
-            console.error(e);
-            this.alert.warning(this.messages['internalServerError'] || '500 Internal Server Error');
+        }
+        Object.keys(errors).forEach(key => {
+          let violation = errors[key].reduce((a:any, b:string) => {a[b] = true; return a}, {});
+          let ctrl = form.get(key);
+          if (ctrl != null) {
+            ctrl.setErrors(violation);
+          } else {
+            let message = errors[key].map((msg: string) => this.messages[msg] || msg ).join('\n');
+            this.alert.warning(message);
           }
-          throw e;
         });
-    }
+        throw e;
+      });
   }
 
   private submittingForms: AbstractControl[] = [];
