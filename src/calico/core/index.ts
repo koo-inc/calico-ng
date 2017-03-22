@@ -3,7 +3,7 @@ import { NgModule, ModuleWithProviders } from "@angular/core";
 import { LocalStorageService } from "./local-storage.service";
 import { SessionStorageService } from "./session-storage.service";
 import { SerializeService } from "./serialize.service";
-import { Api, SubmittingPipe } from "./api.service";
+import { Api, SubmittingPipe, RequestWatcher, REQUEST_HOOK } from "./api.service";
 import { ExtEnumService } from "./ext-enum.service";
 
 @NgModule({
@@ -24,6 +24,8 @@ export class CalicoCoreModule {
         LocalStorageService,
         SessionStorageService,
         SerializeService,
+        {provide: RequestWatcher, useValue: new RequestWatcher()},
+        {provide: REQUEST_HOOK, useExisting: RequestWatcher, multi: true},
         Api,
         ExtEnumService,
       ]

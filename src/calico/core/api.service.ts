@@ -1,7 +1,7 @@
 import { Observable } from "rxjs";
 import 'rxjs/add/operator/map'
 
-import { Injectable, Inject, OpaqueToken, Pipe, PipeTransform } from "@angular/core";
+import { Injectable, Inject, OpaqueToken, Pipe, PipeTransform, Optional } from "@angular/core";
 import { AbstractControl } from "@angular/forms";
 import { Http, Headers, RequestOptions } from "@angular/http";
 
@@ -10,18 +10,31 @@ import { AlertService } from "../ui/alert.service";
 export class MessageConfig {
   [id: string]: string
 }
-
 export const MESSAGE_CONFIG = new OpaqueToken('MessageConfig');
+
+export interface RequestHook {
+  apply<T>(form: any, observable: Observable<T>): Observable<T>;
+}
+export const REQUEST_HOOK = new OpaqueToken('RequestHook');
 
 @Injectable()
 export class Api {
-  constructor(private http: Http, private alert: AlertService, @Inject(MESSAGE_CONFIG) private messages: MessageConfig) { }
+  constructor(
+    private http: Http,
+    private alert: AlertService,
+    @Inject(MESSAGE_CONFIG) private messages: MessageConfig,
+    @Optional() @Inject(REQUEST_HOOK) private requestHooks: RequestHook[]
+  ) {
+    this.requestHooks = this.requestHooks || [];
+  }
 
   submit<T> (url: string): Observable<T>;
   submit<T> (url: string, form: AbstractControl): Observable<T>;
   submit<T> (url: string, form: any): Observable<T>;
   submit<T> (url: string, form?: any): Observable<T> {
-    if(form instanceof AbstractControl && form.invalid){
+    form = form instanceof AbstractControl ? form : {value: form, invalid: false, get: (key: string): any => null};
+
+    if(form.invalid){
       this.alert.warning(this.messages['invalidForm'] || '入力値に問題があります。');
       return Observable.empty();
     }
@@ -30,18 +43,15 @@ export class Api {
     headers.append('Content-Type', 'application/json');
     let options = new RequestOptions({headers: headers});
 
-    form = form instanceof AbstractControl ? form : {value: form, get: (key: string): any => null};
+    let observable = this.http.post(url, JSON.stringify(form.value), options)
+      .map((req, _) => req.json() as T);
 
-    this.submittingForms.push(form);
-    return this.http.post(url, JSON.stringify(form.value), options)
-      .map((req, _) => req.json() as T)
-      .do(() => { this.submittingForms.remove((f: AbstractControl) => f === form); })
+    return this.requestHooks.reduce((o, hook) => hook.apply(form, o), observable)
       .catch((e: any, caught: Observable<any>): Observable<any> => {
-        this.submittingForms.remove((f: AbstractControl) => f === form);
         let errors: any;
         try {
           errors = e.json();
-        } catch (e) {
+        } catch (e2) {
           console.error(e);
           this.alert.warning(this.messages['internalServerError'] || '500 Internal Server Error');
           throw e;
@@ -59,22 +69,36 @@ export class Api {
         throw e;
       });
   }
+}
 
-  private submittingForms: AbstractControl[] = [];
+@Injectable()
+export class RequestWatcher implements RequestHook {
+  private pendingForms: any[];
 
-  isSubmitting(form: AbstractControl): boolean {
-    return this.submittingForms.indexOf(form) != -1;
+  constructor() {
+    this.pendingForms = [];
+  }
+  apply<T>(form: any, observable: Observable<T>): Observable<T> {
+    this.pendingForms.push(form);
+    return observable.do(
+      o => this.pendingForms.remove(form),
+      e => this.pendingForms.remove(form)
+    );
+  }
+
+  isSubmitting(form: any): boolean {
+    return this.pendingForms.indexOf(form) > -1;
   }
 }
 
 @Pipe({ name: 'submitting', pure: false })
 export class SubmittingPipe implements PipeTransform {
   constructor(
-    private api: Api,
+    private watcher: RequestWatcher,
   ) {}
 
   transform(value: any, ...args: any[]): any {
-    return this.api.isSubmitting(value);
+    return this.watcher.isSubmitting(value);
   }
 
 }
