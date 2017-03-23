@@ -3,7 +3,7 @@ import 'rxjs/add/operator/map'
 
 import { Injectable, Inject, OpaqueToken, Pipe, PipeTransform, Optional } from "@angular/core";
 import { AbstractControl } from "@angular/forms";
-import { Http, Headers, RequestOptions } from "@angular/http";
+import { Http, Headers, RequestOptions, Response } from "@angular/http";
 
 import { AlertService } from "../ui/alert.service";
 
@@ -13,7 +13,7 @@ export class MessageConfig {
 export const MESSAGE_CONFIG = new OpaqueToken('MessageConfig');
 
 export interface RequestHook {
-  apply<T>(form: any, observable: Observable<T>): Observable<T>;
+  apply(url: string, form: any, observable: Observable<Response>): Observable<Response>;
 }
 export const REQUEST_HOOK = new OpaqueToken('RequestHook');
 
@@ -43,10 +43,10 @@ export class Api {
     headers.append('Content-Type', 'application/json');
     let options = new RequestOptions({headers: headers});
 
-    let observable = this.http.post(url, JSON.stringify(form.value), options)
-      .map((req, _) => req.json() as T);
+    let observable = this.http.post(url, JSON.stringify(form.value), options);
 
-    return this.requestHooks.reduce((o, hook) => hook.apply(form, o), observable)
+    return this.requestHooks.reduce((o, hook) => hook.apply(url, form, o), observable)
+      .map((req, _) => req.json() as T)
       .catch((e: any, caught: Observable<any>): Observable<any> => {
         let errors: any;
         try {
@@ -78,7 +78,7 @@ export class RequestWatcher implements RequestHook {
   constructor() {
     this.pendingForms = [];
   }
-  apply<T>(form: any, observable: Observable<T>): Observable<T> {
+  apply(url: string, form: any, observable: Observable<Response>): Observable<Response> {
     this.pendingForms.push(form);
     return observable.do(
       o => this.pendingForms.remove(form),
