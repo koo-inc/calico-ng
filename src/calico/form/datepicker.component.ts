@@ -1,4 +1,4 @@
-import { Component, forwardRef, Injector, Input, ViewChild, TemplateRef } from '@angular/core';
+import { Component, forwardRef, Injector, Input, ViewChild } from '@angular/core';
 import {NG_VALUE_ACCESSOR} from '@angular/forms';
 import { PopoverDirective } from "ng2-bootstrap";
 import { FormItem } from "./item";
@@ -19,6 +19,7 @@ moment.locale('ja');
         placement="bottom"
         container="body"
         triggers=""
+        [disabled]="readonly"
         (focus)="onFocus($event)"
         (blur)="onBlur($event)"
         (click)="onClick($event)"

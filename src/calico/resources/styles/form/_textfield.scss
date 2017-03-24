@@ -1,4 +1,8 @@
 input.c-textfield {
+  &[disabled] {
+    background-color: #eee;
+    cursor: not-allowed;
+  }
   &.invalid {
     background-color: #fdd;
     border: solid 1px red;

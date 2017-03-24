@@ -1,4 +1,4 @@
-import {Component, ElementRef, Renderer, forwardRef, Injector} from '@angular/core';
+import {Component, forwardRef, Injector} from '@angular/core';
 import {NG_VALUE_ACCESSOR} from '@angular/forms';
 import {FormItem} from "./item";
 
@@ -7,7 +7,7 @@ import {FormItem} from "./item";
   template: `
     <input type="text" [(ngModel)]="value"
       class="c-textfield"
-      [readonly]="readonly"
+      [disabled]="readonly"
       [class.invalid]="isInvalid()"/>
     <c-error-tip [for]="control"></c-error-tip>
   `,

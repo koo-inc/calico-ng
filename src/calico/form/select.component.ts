@@ -7,6 +7,7 @@ import { FormItem } from "./item";
   template: `
     <select [(ngModel)]="selectValue"
       class="c-select"
+      [disabled]="readonly"
       [class.invalid]="isInvalid()"
     >
       <option *ngFor="let e of innerOptions;trackBy:trackBy" [ngValue]="e.key">{{e.label}}</option>

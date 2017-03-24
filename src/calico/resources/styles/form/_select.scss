@@ -25,6 +25,10 @@ select.c-select {
     color: #333;
   }
 
+  &[disabled] {
+    background-color: #eee;
+    cursor: not-allowed;
+  }
   &.invalid {
     background-color: #fdd;
     border: solid 1px red;

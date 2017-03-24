@@ -10,6 +10,7 @@ import { FormItem } from "./item";
         type="button"
         class="btn btn-default c-checkbox"
         [class.active]="e.selected"
+        [disabled]="readonly"
         (click)="click(e)"
       >{{e.label}}</button>
     </span>

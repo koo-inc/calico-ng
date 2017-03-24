@@ -4,7 +4,6 @@ import { ControlValueAccessor, FormControlName, NgControl } from "@angular/forms
 const noop = () => {};
 
 export class FormItem implements ControlValueAccessor, OnInit {
-  @Input() required: boolean = false;
   @Input() readonly: boolean = false;
 
   @Output() clcChange: EventEmitter<any> = new EventEmitter();

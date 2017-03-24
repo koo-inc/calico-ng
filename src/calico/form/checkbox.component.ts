@@ -8,6 +8,7 @@ import {FormItem} from "./item";
     <button type="button" class="btn btn-default c-checkbox"
       [class.invalid]="isInvalid()"
       [class.active]="checked"
+      [disabled]="readonly"
       (click)="toggle()"
     >{{label}}</button>
     <c-error-tip [for]="control"></c-error-tip>
