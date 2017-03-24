@@ -9,6 +9,7 @@ import { PanelComponent, PanelHeaderComponent, PanelFooterComponent } from "./pa
 import { ModalComponent, ModalHeaderComponent, ModalFooterComponent } from "./modal.component";
 import { ColsComponent } from "./cols.component";
 import { AlertComponent, AlertService } from "./alert.service";
+import { PopoverComponent } from "./popover.component";
 
 @NgModule({
   imports: [
@@ -26,6 +27,7 @@ import { AlertComponent, AlertService } from "./alert.service";
     ModalComponent,
     ModalHeaderComponent,
     ModalFooterComponent,
+    PopoverComponent,
     ColsComponent,
     AlertComponent,
   ],
@@ -40,6 +42,7 @@ import { AlertComponent, AlertService } from "./alert.service";
     ModalComponent,
     ModalHeaderComponent,
     ModalFooterComponent,
+    PopoverComponent,
     ColsComponent,
     AlertComponent,
   ]
@@ -57,3 +60,4 @@ export class CalicoUiModule {
 
 export { AlertService, AlertConfig, AlertOptions, AlertMessage } from "./alert.service";
 export { ModalComponent } from "./modal.component";
+export { PopoverComponent } from "./popover.component";
