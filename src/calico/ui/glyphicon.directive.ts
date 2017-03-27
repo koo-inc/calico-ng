@@ -1,10 +1,10 @@
 import { Directive, Input, OnInit, ElementRef, Renderer } from '@angular/core';
 
 @Directive({
-  selector: '[c-glyphicon]',
+  selector: '[cGlyphicon]',
 })
 export class GlyphiconDirective implements OnInit {
-  @Input('c-glyphicon') glyphicon: string;
+  @Input('cGlyphicon') glyphicon: string;
 
   constructor(private el: ElementRef, private renderer: Renderer) {
     renderer.setElementClass(el.nativeElement, "glyphicon", true);

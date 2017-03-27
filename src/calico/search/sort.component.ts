@@ -3,7 +3,7 @@ import { Component, Input } from "@angular/core";
 import { SearchContext } from "./search.service";
 
 @Component({
-  selector: '[c-sort]',
+  selector: '[cSort]',
   template: `
     <div class="c-sort"
       [class.asc]="searchContext.form.value._sort?.prop == prop && searchContext.form.value._sort?.type == 'ASC'"
@@ -14,7 +14,7 @@ import { SearchContext } from "./search.service";
   `
 })
 export class SortComponent {
-  @Input('c-sort') prop: string;
+  @Input('cSort') prop: string;
 
   constructor(
     private searchContext: SearchContext,

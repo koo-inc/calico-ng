@@ -4,7 +4,7 @@ import { SearchContext } from "./search.service";
 import { Subscription } from "rxjs";
 
 @Component({
-  selector: '[c-pager]',
+  selector: '[cPager]',
   template: `
     <span class="c-pager">
       <span class="record-count">

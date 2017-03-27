@@ -1,7 +1,7 @@
 import { Directive, ElementRef, Renderer, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 
 @Directive({
-  selector: '[c-list-table]'
+  selector: '[cListTable]'
 })
 export class ListTableDirective implements OnInit, OnChanges {
   constructor(private el: ElementRef, private renderer: Renderer) {
@@ -25,7 +25,7 @@ export class ListTableDirective implements OnInit, OnChanges {
 }
 
 @Directive({
-  selector: '[c-info-table]'
+  selector: '[cInfoTable]'
 })
 export class InfoTableDirective {
   constructor(el: ElementRef, renderer: Renderer) {

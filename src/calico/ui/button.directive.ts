@@ -1,10 +1,10 @@
 import { Directive, Input, OnInit, ElementRef, Renderer } from '@angular/core';
 
 @Directive({
-  selector: '[c-btn]',
+  selector: '[cBtn]',
 })
 export class ButtonDirective implements OnInit {
-  @Input('c-btn') buttonType: string;
+  @Input('cBtn') buttonType: string;
 
   constructor(private el: ElementRef, private renderer: Renderer) {
     renderer.setElementClass(el.nativeElement, "btn", true);

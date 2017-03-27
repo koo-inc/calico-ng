@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: '[c-cols]',
+  selector: '[cCols]',
   template: `
     <col *ngFor="let col of cols" [width]="col">
     <ng-content></ng-content>
@@ -11,7 +11,7 @@ export class ColsComponent {
 
   private _cols: any[] = [];
 
-  @Input('c-cols')
+  @Input('cCols')
   set cols(value: any[]) {
     if(value == null || !Object.isArray(value) || value.length == 0){
       this._cols = [];
