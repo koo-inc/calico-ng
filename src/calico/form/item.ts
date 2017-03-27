@@ -7,6 +7,8 @@ export class FormItem implements ControlValueAccessor, OnInit {
   @Input() readonly: boolean = false;
 
   @Output() clcChange: EventEmitter<any> = new EventEmitter();
+  @Output() focus: EventEmitter<any> = new EventEmitter();
+  @Output() blur: EventEmitter<any> = new EventEmitter();
 
   innerValue: any;
   control: NgControl;
