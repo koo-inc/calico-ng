@@ -1,0 +1,17 @@
+language: node_js
+node_js:
+  - '7'
+install:
+  - npm install
+script:
+  - npm run build
+
+deploy:
+  provider: releases
+  api_key:
+    secure: tIeKyWMnklp4+SEiTKKo+BwY9ab/75gpNKxEeSHOZtUBXVC3HCZyj2Fi9+t8ZDs/ebJKt/44ENXU6AAFxC14vYa0AbF3sxmZ1dZDE97nWPBNbwL8HbvSVN/5KNcASM1X5aZtUpMb6gji23GJ0Aav5vhUKPyo4SOrO17ZlcGwTz7hhyknGZ4WNY31Q5aQi50r6Dz8lF4t/TRx2lr4qHTtPeWVlsuuPCoesOo1i88JPcIVlEVyCZnhISavNm4TiOyUjxp6TTAg/hWR011WsBMfLRo9ctK7kqdZ5WxCB/72X/T+EpFXwqbqv6n3efCW9+wfVWPduDDp26ca0xayAnZHr640yqETb6Zy4R2nhWtrc+yKonIJKe8EwfmFGcY/nMBQA5N0QKRP7ISB2RHaXW2dVqP5TYBaHar8tIEKFgwUTlY1/2azKcaFV5ChQRrB6gdWdY1N4P/8hIW/NZ+LGBD7JROXx1NXjbkc8/zRIm4R55hv6VsFY1liDlxq6CFwOnAOiMeHnRdvJaPfA+BCUFLtFQEVWfKnkI4/B3fAgQQnlEZNmpgbt8NLWr31Zf9HnlhO2i+ifIVdzA9bojzDMvcSgv6OETnKoiRnU0ssPGPGrRutsas0ZMguCtIVa85DgCjfkBAX0kGackJu5TkfgwjDpNQvWXnLXofsDIXzMIg+G40=
+  file: packages/calico.tar.gz
+  skip_cleanup: true
+  on:
+    repo: koo-inc/calico-ng
+    tags: true

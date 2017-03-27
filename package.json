@@ -6,10 +6,11 @@
   "angular-cli": {},
   "scripts": {
     "prebuild": "rm -rf ./packages/* && npm run postbuild",
-    "build": "ngc && npm run copy-resources && npm run copy-package.json",
+    "build": "ngc && npm run copy-resources && npm run copy-package.json && npm run pack",
     "postbuild": "find ./src -name '*.ngfactory.ts' -delete && find ./src -name '*.ngsummary.json' -delete",
     "copy-resources": "cp -R ./src/calico/resources ./packages/calico/",
-    "copy-package.json": "cp ./src/calico/package.json ./packages/calico/"
+    "copy-package.json": "cp ./src/calico/package.json ./packages/calico/",
+    "pack": "cd packages/calico && tar -zcvf ../calico.tar.gz ./"
   },
   "private": true,
   "dependencies": {
