@@ -6,7 +6,7 @@ const noop = () => {};
 export class FormItem implements ControlValueAccessor, OnInit {
   @Input() readonly: boolean = false;
 
-  @Output() clcChange: EventEmitter<any> = new EventEmitter();
+  @Output() cChange: EventEmitter<any> = new EventEmitter();
   @Output() focus: EventEmitter<any> = new EventEmitter();
   @Output() blur: EventEmitter<any> = new EventEmitter();
 
@@ -29,7 +29,7 @@ export class FormItem implements ControlValueAccessor, OnInit {
     if (value !== this.innerValue) {
       this.innerValue = value;
       this.onChangeCallback(value);
-      this.clcChange.emit(value);
+      this.cChange.emit(value);
     }
   }
 

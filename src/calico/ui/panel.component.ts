@@ -17,7 +17,7 @@ export class PanelFooterComponent {}
   template: `
     <div class="panel panel-default">
       <div class="panel-heading" *ngIf="showHeader">
-        {{title}}
+        {{heading}}
         <ng-content select="c-panel-header"></ng-content>
       </div>
       <div class="panel-body">
@@ -30,13 +30,13 @@ export class PanelFooterComponent {}
   `
 })
 export class PanelComponent {
-  @Input() title: string;
+  @Input() heading: string;
 
   @ContentChild(PanelHeaderComponent) header: PanelHeaderComponent;
   @ContentChild(PanelFooterComponent) footer: PanelFooterComponent;
 
   get showHeader(): boolean {
-    return this.header != null || this.title != null;
+    return this.header != null || this.heading != null;
   }
 
   get showFooter(): boolean {

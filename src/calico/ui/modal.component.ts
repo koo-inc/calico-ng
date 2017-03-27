@@ -29,7 +29,7 @@ export class ModalFooterComponent {}
         <div class="modal-content">
           <div class="modal-header" *ngIf="showHeader">
             <button *ngIf="closeButton" type="button" class="close pull-right" aria-label="Close" (click)="modal.hide()"><span>&times;</span></button>
-            {{title}}
+            {{heading}}
             <ng-content select="c-modal-header"></ng-content>
           </div>
           <div class="modal-body">
@@ -45,7 +45,7 @@ export class ModalFooterComponent {}
 })
 export class ModalComponent implements OnInit {
 
-  @Input() title: string;
+  @Input() heading: string;
   @Input() size: string;
   @Input() closeButton: boolean = true;
   @Input() backdrop: boolean | "static" = true;
@@ -83,7 +83,7 @@ export class ModalComponent implements OnInit {
   @ContentChild(ModalFooterComponent) footer: ModalFooterComponent;
 
   get showHeader(): boolean {
-    return this.header != null || this.title != null || this.closeButton;
+    return this.header != null || this.heading != null || this.closeButton;
   }
 
   get showFooter(): boolean {
