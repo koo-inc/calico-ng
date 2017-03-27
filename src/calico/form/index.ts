@@ -12,6 +12,7 @@ import { CheckboxComponent } from "./checkbox.component";
 import { CheckboxesComponent } from "./checkboxes.component";
 import { DatepickerComponent } from "./datepicker.component";
 import { TimepickerComponent } from "./timepicker.component";
+import { TextareaComponent } from "./textarea.component";
 
 @NgModule({
   imports: [
@@ -32,6 +33,7 @@ import { TimepickerComponent } from "./timepicker.component";
     CheckboxesComponent,
     DatepickerComponent,
     TimepickerComponent,
+    TextareaComponent,
   ],
   exports: [
     ErrorTipComponent,
@@ -43,6 +45,7 @@ import { TimepickerComponent } from "./timepicker.component";
     CheckboxesComponent,
     DatepickerComponent,
     TimepickerComponent,
+    TextareaComponent,
   ]
 })
 export class CalicoFormModule {
