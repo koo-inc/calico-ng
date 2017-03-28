@@ -1,13 +1,8 @@
 .c-checkbox {
   border: 0;
   display: inline-block;
-  background-color: transparent;
-  background-image: url('#{$calico-images-path}/checkbox.png');
-  background-repeat: no-repeat;
-  background-position: 0 center;
-  padding: 2px 2px 2px 12px;
+  padding: 2px 2px 2px 2px;
   margin: 2px 2px 2px 2px !important;
-  text-indent: 4px;
   min-height: 14px;
   box-sizing: border-box;
   font-size: 12px;
@@ -16,22 +11,22 @@
   boder: none;
   border-radius: 0;
 
-  &.active {
-    background-image: url('#{$calico-images-path}/checkbox_checked.png');
-    background-color: transparent;
-    box-shadow: none;
-    outline: none;
-  }
-
   &:hover {
     background-color: transparent;
   }
 
-  &:focus {
-    background-color: transparent;
-    outline: 0 none;
-    box-shadow: none;
-    boder: none;
+  .fa {
+    font-size: 140%;
+    margin-right: 0.2em;
+    vertical-align: bottom;
+  }
+
+  .fa-square-o {
+    color: #999;
+  }
+
+  .fa-check-square {
+    color: #337ab7;
   }
 
   &.invalid {

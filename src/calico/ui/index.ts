@@ -5,6 +5,7 @@ import { ModalModule } from "ng2-bootstrap";
 import { InfoTableDirective, ListTableDirective, } from './table.directive';
 import { ButtonDirective } from "./button.directive";
 import { GlyphiconDirective } from "./glyphicon.directive";
+import { FontAwesomeDirective } from "./font-awesome.directive";
 import { PanelComponent, PanelHeaderComponent, PanelFooterComponent } from "./panel.component";
 import { ModalComponent, ModalHeaderComponent, ModalFooterComponent } from "./modal.component";
 import { ColsComponent } from "./cols.component";
@@ -21,6 +22,7 @@ import { PopoverDirective } from "./popover.directive";
     ListTableDirective,
     ButtonDirective,
     GlyphiconDirective,
+    FontAwesomeDirective,
     PanelComponent,
     PanelHeaderComponent,
     PanelFooterComponent,
@@ -36,6 +38,7 @@ import { PopoverDirective } from "./popover.directive";
     ListTableDirective,
     ButtonDirective,
     GlyphiconDirective,
+    FontAwesomeDirective,
     PanelComponent,
     PanelHeaderComponent,
     PanelFooterComponent,

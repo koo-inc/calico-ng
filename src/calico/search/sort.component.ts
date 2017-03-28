@@ -6,10 +6,11 @@ import { SearchContext } from "./search.service";
   selector: '[cSort]',
   template: `
     <div class="c-sort"
-      [class.asc]="searchContext.form.value._sort?.prop == prop && searchContext.form.value._sort?.type == 'ASC'"
-      [class.desc]="searchContext.form.value._sort?.prop == prop && searchContext.form.value._sort?.type == 'DESC'"
       (click)="onClick()">
       <ng-content></ng-content>
+      <span *ngIf="isAsc()" class="active" class="fa fa-sort-asc"></span>
+      <span *ngIf="isDesc()" class="active" class="fa fa-sort-desc"></span>
+      <span *ngIf="!isAsc() && !isDesc()" class="fa fa-sort"></span>
     </div>
   `
 })
@@ -22,6 +23,16 @@ export class SortComponent {
 
   onClick(): void {
     this.searchContext.onSortChange(this.prop);
+  }
+
+  private isAsc(): boolean {
+    if(this.searchContext.form.value._sort == null) return false;
+    return this.searchContext.form.value._sort.prop == this.prop && this.searchContext.form.value._sort.type == 'ASC'
+  }
+
+  private isDesc(): boolean {
+    if(this.searchContext.form.value._sort == null) return false;
+    return this.searchContext.form.value._sort.prop == this.prop && this.searchContext.form.value._sort.type == 'DESC'
   }
 }
 

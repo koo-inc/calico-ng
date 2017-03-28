@@ -7,12 +7,10 @@ import { FormItem } from "./item";
   template: `
     <span class="btn-group c-checkboxes" [class.invalid]="isInvalid()">
       <button *ngFor="let e of innerOptions" 
-        type="button"
-        class="btn btn-default c-checkbox"
-        [class.active]="e.selected"
+        type="button" class="btn btn-default c-checkbox"
         [disabled]="readonly"
         (click)="click(e)"
-      >{{e.label}}</button>
+      ><span *ngIf="e.selected" class="fa fa-check-square"></span><span *ngIf="!e.selected" class="fa fa-square-o"></span>{{e.label}}</button>
     </span>
     <c-error-tip [for]="control"></c-error-tip>
   `,

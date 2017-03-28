@@ -7,10 +7,9 @@ import {FormItem} from "./item";
   template: `
     <button type="button" class="btn btn-default c-checkbox"
       [class.invalid]="isInvalid()"
-      [class.active]="checked"
       [disabled]="readonly"
       (click)="toggle()"
-    >{{label}}</button>
+    ><span *ngIf="checked" class="fa fa-check-square"></span><span *ngIf="!checked" class="fa fa-square-o"></span>{{label}}</button>
     <c-error-tip [for]="control"></c-error-tip>
   `,
   styles: [`
