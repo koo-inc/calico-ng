@@ -1,16 +1,17 @@
-import { Component, forwardRef, Injector } from '@angular/core';
+import { Component, forwardRef, Injector, Input } from '@angular/core';
 import {NG_VALUE_ACCESSOR} from '@angular/forms';
 import {FormItem} from "./item";
 
 @Component({
   selector: 'c-textfield',
   template: `
-    <input type="text" [(ngModel)]="value"
-      class="c-textfield"
+    <input type="text" class="c-textfield" [(ngModel)]="value"
+      [class.invalid]="isInvalid()"
       [disabled]="readonly"
+      [placeholder]="placeholder"
       (focus)="focus.next($event)"
       (blur)="blur.next($event)"
-      [class.invalid]="isInvalid()"/>
+    />
     <c-error-tip [for]="control"></c-error-tip>
   `,
   styles: [`
@@ -34,4 +35,6 @@ export class TextFieldComponent extends FormItem {
   constructor(injector: Injector) {
     super(injector);
   }
+
+  @Input() placeholder: string = '';
 }

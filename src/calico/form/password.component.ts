@@ -1,14 +1,15 @@
-import {Component, forwardRef, Injector} from '@angular/core';
+import { Component, forwardRef, Injector, Input } from '@angular/core';
 import {NG_VALUE_ACCESSOR} from '@angular/forms';
 import {FormItem} from "./item";
 
 @Component({
   selector: 'c-password',
   template: `
-    <input type="password" [(ngModel)]="value"
-      class="c-password"
+    <input type="password" class="c-password" [(ngModel)]="value"
+      [class.invalid]="isInvalid()"
       [disabled]="readonly"
-      [class.invalid]="isInvalid()"/>
+      [placeholder]="placeholder"
+    />
     <c-error-tip [for]="control"></c-error-tip>
   `,
   styles: [`
@@ -32,4 +33,6 @@ export class PasswordComponent extends FormItem {
   constructor(injector: Injector) {
     super(injector);
   }
+
+  @Input() placeholder: string = '';
 }

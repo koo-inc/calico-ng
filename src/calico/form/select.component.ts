@@ -5,10 +5,9 @@ import { FormItem } from "./item";
 @Component({
   selector: 'c-select',
   template: `
-    <select [(ngModel)]="selectValue"
-      class="c-select"
-      [disabled]="readonly"
+    <select class="c-select" [(ngModel)]="selectValue"
       [class.invalid]="isInvalid()"
+      [disabled]="readonly"
     >
       <option *ngFor="let e of innerOptions;trackBy:trackBy" [ngValue]="e.key">{{e.label}}</option>
     </select>

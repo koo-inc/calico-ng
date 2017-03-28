@@ -8,8 +8,8 @@ import { FormItem } from "./item";
   template: `
     <span class="text-container">
       <input type="text" [(ngModel)]="textValue"
-        [disabled]="readonly"
         [class.invalid]="isInvalid()"
+        [disabled]="readonly"
         #popover="bs-popover"
         [popover]="popoverTpl"
         placement="bottom"

@@ -1,16 +1,16 @@
-import {Component, forwardRef, Injector} from '@angular/core';
+import { Component, forwardRef, Injector, Input } from '@angular/core';
 import {NG_VALUE_ACCESSOR} from '@angular/forms';
 import {FormItem} from "./item";
 
 @Component({
   selector: 'c-textarea',
   template: `
-    <textarea [(ngModel)]="value"
-      class="c-textarea"
+    <textarea class="c-textarea" [(ngModel)]="value"
+      [class.invalid]="isInvalid()"
+      [disabled]="readonly"
+      [placeholder]="placeholder"
       cols="30"
       rows="10"
-      [disabled]="readonly"
-      [class.invalid]="isInvalid()"
     ></textarea>
     <c-error-tip [for]="control"></c-error-tip>
   `,
@@ -35,4 +35,6 @@ export class TextareaComponent extends FormItem {
   constructor(injector: Injector) {
     super(injector);
   }
+
+  @Input() placeholder: string = '';
 }

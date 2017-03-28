@@ -14,12 +14,12 @@ moment.locale('ja');
     <span class="text-container">
       <input type="text" [(ngModel)]="textValue"
         [class.invalid]="isInvalid()"
+        [disabled]="readonly"
         #popover="bs-popover"
         [popover]="popoverTpl"
         placement="bottom"
         container="body"
         triggers=""
-        [disabled]="readonly"
         (focus)="onFocus($event)"
         (blur)="onBlur($event)"
         (click)="onClick($event)"

@@ -7,10 +7,9 @@ import { FormItem } from "./item";
   template: `
     <span class="c-radios btn-group" [class.invalid]="isInvalid()">
       <button *ngFor="let e of innerOptions" 
-        type="button"
-        class="btn btn-default c-radio"
-        [class.active]="e.selected"
+        type="button" class="btn btn-default c-radio"
         [disabled]="readonly"
+        [class.active]="e.selected"
         (click)="click(e)"
       >{{e.label}}</button>
     </span>
