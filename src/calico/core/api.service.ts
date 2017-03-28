@@ -1,7 +1,7 @@
 import { Observable } from "rxjs";
 import 'rxjs/add/operator/map'
 
-import { Injectable, Inject, OpaqueToken, Pipe, PipeTransform, Optional } from "@angular/core";
+import { Injectable, Inject, Pipe, PipeTransform, Optional, InjectionToken } from "@angular/core";
 import { AbstractControl } from "@angular/forms";
 import { Http, Headers, RequestOptions, Response } from "@angular/http";
 
@@ -10,12 +10,12 @@ import { AlertService } from "../ui/alert.service";
 export class MessageConfig {
   [id: string]: string
 }
-export const MESSAGE_CONFIG = new OpaqueToken('MessageConfig');
+export const MESSAGE_CONFIG = new InjectionToken<MessageConfig>('MessageConfig');
 
 export interface RequestHook {
   apply(url: string, form: any, observable: Observable<Response>): Observable<Response>;
 }
-export const REQUEST_HOOK = new OpaqueToken('RequestHook');
+export const REQUEST_HOOK = new InjectionToken<RequestHook>('RequestHook');
 
 @Injectable()
 export class Api {

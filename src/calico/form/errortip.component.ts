@@ -1,5 +1,5 @@
 import {
-  Component, Input, ElementRef, AfterContentChecked, Renderer, Injector, OpaqueToken, Inject
+  Component, Input, ElementRef, AfterContentChecked, Renderer, Inject
 } from '@angular/core';
 import { NgControl, FormControlName } from "@angular/forms";
 import { MESSAGE_CONFIG, MessageConfig } from "../core";

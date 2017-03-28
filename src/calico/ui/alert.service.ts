@@ -1,4 +1,5 @@
-import { Injectable, Component, trigger, state, style, transition, animate, keyframes, Injector } from "@angular/core";
+import { Injectable, Component, Injector } from "@angular/core";
+import { trigger, style, transition, animate, keyframes } from "@angular/animations";
 import { randomString } from "../util/string";
 
 @Injectable()
@@ -31,7 +32,7 @@ export class AlertService {
 
   danger(body: string, opts?: AlertOptions): void {
     this.addMessage(this.createMessage('danger', body, opts));
-    
+
   }
 
   private createMessage(type: string, body: string, opts?: AlertOptions): AlertMessage {
@@ -98,26 +99,26 @@ export interface AlertMessage {
   template: `
     <div class="c-alert">
       <div class="alert-container top left">
-        <template [ngTemplateOutlet]="tpl" [ngOutletContext]="{position: 'top-left'}"></template>
+        <ng-template [ngTemplateOutlet]="tpl" [ngOutletContext]="{position: 'top-left'}"></ng-template>
       </div>
       <div class="alert-container top right">
-        <template [ngTemplateOutlet]="tpl" [ngOutletContext]="{position: 'top-right'}"></template>
+        <ng-template [ngTemplateOutlet]="tpl" [ngOutletContext]="{position: 'top-right'}"></ng-template>
       </div>
       <div class="alert-container bottom left">
-        <template [ngTemplateOutlet]="tpl" [ngOutletContext]="{position: 'bottom-left'}"></template>
+        <ng-template [ngTemplateOutlet]="tpl" [ngOutletContext]="{position: 'bottom-left'}"></ng-template>
       </div>
       <div class="alert-container bottom right">
-        <template [ngTemplateOutlet]="tpl" [ngOutletContext]="{position: 'bottom-right'}"></template>
+        <ng-template [ngTemplateOutlet]="tpl" [ngOutletContext]="{position: 'bottom-right'}"></ng-template>
       </div>
     </div>
-    <template #tpl let-position="position">
+    <ng-template #tpl let-position="position">
       <div *ngFor="let message of alertService.messages[position];trackBy: identify"
           class="alert alert-{{message.type}}"
           [@state]="message.state">
         <a class="close" (click)="alertService.removeMessage(message)">×</a>
         {{message.body}}
       </div>
-    </template>
+    </ng-template>
   `,
   styles: [`
   `],

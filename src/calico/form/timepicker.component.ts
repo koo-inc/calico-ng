@@ -23,7 +23,7 @@ import { FormItem } from "./item";
         [class.active]="isInvalidText()"
       ></span>
     </span>
-    <template #popoverTpl>
+    <ng-template #popoverTpl>
       <div class="c-timepicker-popover" (mousedown)="keep($event)">
         <timepicker [(ngModel)]="timepickerValue"
           [arrowkeys]="true"
@@ -34,7 +34,7 @@ import { FormItem } from "./item";
           [minuteStep]="stepMinute"
         ></timepicker>
       </div>
-    </template>
+    </ng-template>
     <c-error-tip [for]="control"></c-error-tip>
   `,
   styles: [`
