@@ -1,3 +1,5 @@
+@import './variables';
+
 c-timepicker {
   .text-container {
     position: relative;
@@ -7,12 +9,12 @@ c-timepicker {
       width: 100px;
 
       &[disabled] {
-        background-color: #eee;
-        cursor: not-allowed;
+        background-color: $c-readonly-bgcolor;
+        cursor: $c-readonly-cursor;
       }
       &.invalid {
-        background-color: #fdd;
-        border: solid 1px red;
+        background-color: $c-invalid-bgcolor;
+        border: $c-invalid-border;
       }
     }
     .text-icon {
@@ -25,12 +27,12 @@ c-timepicker {
       color: #666;
       border-right: solid 1px #999;
     }
-    .invalid-text {
+    .invalid-text-format {
       display: none !important;
       position: absolute !important;
       right: 1px !important;
       font-size: 12px !important;
-      color: #FD8306;
+      color: $c-invalid-text-format-color;
 
       &.active {
         display: inline-block !important;

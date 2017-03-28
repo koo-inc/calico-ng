@@ -1,3 +1,5 @@
+@import './variables';
+
 select.c-select {
   text-align: left;
   height: 28px;
@@ -10,7 +12,6 @@ select.c-select {
   font-size: 12px;
   line-height: 1.5;
   background-color: #fff;
-  background-image: none;
   color: #333;
   -moz-user-select: none;
   cursor: pointer;
@@ -26,11 +27,11 @@ select.c-select {
   }
 
   &[disabled] {
-    background-color: #eee;
-    cursor: not-allowed;
+    background-color: $c-readonly-bgcolor;
+    cursor: $c-readonly-cursor;
   }
   &.invalid {
-    background-color: #fdd;
-    border: solid 1px red;
+    background-color: $c-invalid-bgcolor;
+    border: $c-invalid-border;
   }
 }

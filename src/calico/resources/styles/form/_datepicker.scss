@@ -1,3 +1,5 @@
+@import './variables';
+
 c-datepicker {
   .text-container {
     position: relative;
@@ -7,12 +9,12 @@ c-datepicker {
       width: 130px;
 
       &[disabled] {
-        background-color: #eee;
-        cursor: not-allowed;
+        background-color: $c-readonly-bgcolor;
+        cursor: $c-readonly-cursor;
       }
       &.invalid {
-        background-color: #fdd;
-        border: solid 1px red;
+        background-color: $c-invalid-bgcolor;
+        border: $c-invalid-border;
       }
     }
     .text-icon {
@@ -25,12 +27,12 @@ c-datepicker {
       color: #666;
       border-right: solid 1px #999;
     }
-    .invalid-text {
+    .invalid-text-format {
       display: none !important;
       position: absolute !important;
       right: 1px !important;
       font-size: 12px !important;
-      color: #FD8306;
+      color: $c-invalid-text-format-color;
 
       &.active {
         display: inline-block !important;
@@ -38,9 +40,6 @@ c-datepicker {
     }
   }
 }
-
-$datepicker-saturday-color: #2b96ca !default;
-$datepicker-sunday-color: #e04a47 !default;
 
 .c-datepicker-popover {
   .btn {
@@ -52,21 +51,21 @@ $datepicker-sunday-color: #e04a47 !default;
     margin-bottom: 0;
   }
   tbody tr td:nth-child(6) button {
-    color: $datepicker-saturday-color;
+    color: $c-datepicker-saturday-color;
     &.active {
       color: white;
     }
     span.text-muted {
-      color: lighten($datepicker-saturday-color, 20%);
+      color: lighten($c-datepicker-saturday-color, 20%);
     }
   }
   tbody tr td:nth-child(7) button {
-    color: $datepicker-sunday-color;
+    color: $c-datepicker-sunday-color;
     &.active {
       color: white;
     }
     span.text-muted {
-      color: lighten($datepicker-sunday-color, 20%);
+      color: lighten($c-datepicker-sunday-color, 20%);
     }
   }
 }
