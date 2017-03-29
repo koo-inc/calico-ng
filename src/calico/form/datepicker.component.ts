@@ -24,7 +24,7 @@ moment.locale('ja');
         (focus)="onFocus($event)"
         (blur)="onBlur($event)"
         (click)="onClick($event)"
-      ><span class="text-icon fa fa-calendar"
+      ><span class="text-input-icon fa fa-calendar"
       ></span><span class="invalid-text-format glyphicon glyphicon-warning-sign"
         [class.active]="isInvalidText()"
       ></span>

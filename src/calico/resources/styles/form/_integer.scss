@@ -1,12 +1,12 @@
 @import './variables';
 
-c-timepicker {
+c-integer {
   .text-container {
     position: relative;
 
     input[type="text"] {
       padding-left: 28px;
-      width: 100px;
+      width: 130px;
 
       &[disabled] {
         background-color: $c-readonly-bgcolor;
@@ -17,17 +17,5 @@ c-timepicker {
         border: $c-invalid-border;
       }
     }
-  }
-}
-
-.c-timepicker-popover {
-  .btn {
-    margin: 0;
-    padding: 3px 12px;
-
-  }
-  input[type="text"] {
-    padding: 3px 12px;
-    height: 28px;
   }
 }

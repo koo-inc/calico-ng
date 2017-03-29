@@ -51,4 +51,19 @@ export class FormItem implements ControlValueAccessor, OnInit {
     return this.control && this.control.invalid
       && (!(this.control instanceof FormControlName) || this.control.formDirective.submitted);
   }
+
+  addError(key: string): void {
+    let errors = this.control.control.errors || {};
+    errors[key] = true;
+    this.control.control.setErrors(errors);
+  }
+
+  removeError(key: string): void {
+    let errors = this.control.control.errors || {};
+    errors = Object.exclude(errors, key);
+    if(Object.keys(errors).length == 0){
+      errors = null;
+    }
+    this.control.control.setErrors(errors);
+  }
 }

@@ -19,7 +19,7 @@ import { FormItem } from "./item";
         (focus)="onFocus($event)"
         (blur)="onBlur($event)"
         (click)="onClick($event)"
-      ><span class="text-icon fa fa-clock-o"
+      ><span class="text-input-icon fa fa-clock-o"
       ></span><span class="invalid-text-format glyphicon glyphicon-warning-sign"
         [class.active]="isInvalidText()"
       ></span>
