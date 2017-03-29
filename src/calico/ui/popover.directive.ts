@@ -108,8 +108,8 @@ export class PopoverDirective implements OnDestroy {
     listener.detach(this);
   }
 
-  private get popoverContent(): HTMLElement {
-    return this.popover['_popover']['_componentRef']['_nativeElement'] as HTMLElement;
+  private get popoverContent(): HTMLElement[] {
+    return this.popover['_popover']['_contentRef']['nodes'][0] as HTMLElement[];
   }
 
   _removeIfNotHaving(elm: HTMLElement) {
@@ -121,7 +121,7 @@ export class PopoverDirective implements OnDestroy {
   }
 
   private having(target: HTMLElement): boolean {
-    return this._having([this.elementRef.nativeElement, this.popoverContent], target);
+    return this._having([this.elementRef.nativeElement].concat(this.popoverContent), target);
   }
 
   private _having(elements: HTMLCollection | HTMLElement[], target: HTMLElement): boolean {

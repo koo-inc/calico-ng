@@ -29,7 +29,7 @@ moment.locale('ja');
         [class.active]="isInvalidText()"
       ></span>
     </span>
-    <template #popoverTpl>
+    <ng-template #popoverTpl>
       <div class="c-datepicker-popover" (mousedown)="keep($event)">
         <datepicker [(ngModel)]="datepickerValue"
           [showWeeks]="false"
@@ -44,7 +44,7 @@ moment.locale('ja');
           (selectionDone)="selectionDone()"
         ></datepicker>
       </div>
-    </template>
+    </ng-template>
     <c-error-tip [for]="control"></c-error-tip>
   `,
   styles: [`
