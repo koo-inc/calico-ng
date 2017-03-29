@@ -11,7 +11,7 @@ moment.locale('ja');
 @Component({
   selector: 'c-datepicker',
   template: `
-    <span class="text-container">
+    <span class="text-input-container">
       <input type="text" [(ngModel)]="textValue"
         [class.invalid]="isInvalid()"
         [disabled]="readonly"

@@ -3,7 +3,7 @@ import {NG_VALUE_ACCESSOR} from '@angular/forms';
 import { FormattedTextFormItem } from "./item";
 
 @Component({
-  selector: 'c-integer',
+  selector: 'c-currency',
   template: `
     <span class="text-input-container">
       <input type="text" [(ngModel)]="textValue"
@@ -11,7 +11,7 @@ import { FormattedTextFormItem } from "./item";
         [disabled]="readonly"
         [placeholder]="placeholder"
         (blur)="formatTextValue()"
-      ><span class="text-input-icon fa fa-calculator"
+      ><span class="text-input-icon fa fa-jpy"
       ></span><span class="invalid-text-format glyphicon glyphicon-warning-sign"
         [class.active]="textValueInvalid"
       ></span>
@@ -30,18 +30,18 @@ import { FormattedTextFormItem } from "./item";
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => IntegerComponent),
+      useExisting: forwardRef(() => CurrencyComponent),
       multi: true
     }
   ]
 })
-export class IntegerComponent extends FormattedTextFormItem<number> {
+export class CurrencyComponent extends FormattedTextFormItem<number> {
   constructor(injector: Injector) {
     super(injector);
-    this.formatErrorMessage =  '正しい数値の形式ではありません。';
+    this.formatErrorMessage =  '正しい金額の形式ではありません。';
   }
 
-  @Input() placeholder: string = '数値';
+  @Input() placeholder: string = '金額';
   @Input() allowNegative: boolean = false;
 
   validFormat(textValue: string): boolean {

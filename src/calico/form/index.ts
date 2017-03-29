@@ -14,6 +14,7 @@ import { DatepickerComponent } from "./datepicker.component";
 import { TimepickerComponent } from "./timepicker.component";
 import { TextareaComponent } from "./textarea.component";
 import { IntegerComponent } from "./integer.component";
+import { CurrencyComponent } from "./currency.component";
 
 @NgModule({
   imports: [
@@ -36,6 +37,7 @@ import { IntegerComponent } from "./integer.component";
     TimepickerComponent,
     TextareaComponent,
     IntegerComponent,
+    CurrencyComponent,
   ],
   exports: [
     ErrorTipComponent,
@@ -49,6 +51,7 @@ import { IntegerComponent } from "./integer.component";
     TimepickerComponent,
     TextareaComponent,
     IntegerComponent,
+    CurrencyComponent,
   ]
 })
 export class CalicoFormModule {

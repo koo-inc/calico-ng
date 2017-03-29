@@ -1,12 +1,14 @@
 @import './variables';
 
 c-integer {
-  .text-container {
+  width: $c-integer-width;
+
+  .text-input-container {
     position: relative;
 
     input[type="text"] {
+      width: 100%;
       padding-left: 28px;
-      width: 130px;
 
       &[disabled] {
         background-color: $c-readonly-bgcolor;

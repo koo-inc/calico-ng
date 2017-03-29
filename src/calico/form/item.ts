@@ -3,7 +3,7 @@ import { ControlValueAccessor, FormControlName, NgControl } from "@angular/forms
 
 const noop = () => {};
 
-export class FormItem implements ControlValueAccessor, OnInit {
+export abstract class FormItem implements ControlValueAccessor, OnInit {
   @Input() readonly: boolean = false;
 
   @Output() cChange: EventEmitter<any> = new EventEmitter();
@@ -60,10 +60,55 @@ export class FormItem implements ControlValueAccessor, OnInit {
 
   removeError(key: string): void {
     let errors = this.control.control.errors || {};
-    errors = Object.exclude(errors, key);
+    errors = Object.exclude(errors, (v: any, k: any) => { return k == key;});
     if(Object.keys(errors).length == 0){
       errors = null;
     }
     this.control.control.setErrors(errors);
   }
+}
+
+export abstract class FormattedTextFormItem<T> extends FormItem {
+
+  abstract validFormat(textValue: string): boolean;
+  abstract toVal(textValue: string): T;
+  abstract formatVal(value: T): string;
+
+  innerTextValue: string;
+  textValueInvalid: boolean = false;
+  textValueChanged: boolean = false;
+  formatErrorMessage: string;
+
+  get textValue(): string {
+    return this.innerTextValue;
+  }
+  set textValue(value: string) {
+    if (value !== this.innerTextValue) {
+      this.innerTextValue = value;
+      this.textValueInvalid = !this.validFormat(value);
+      this.textValueChanged = true;
+      this.value = this.toVal(value);
+      if(this.textValueInvalid){
+        this.addError(this.formatErrorMessage);
+      }else{
+        this.removeError(this.formatErrorMessage)
+      }
+    }
+  }
+
+  formatTextValue(): void {
+    if(!this.textValueChanged) return;
+    if(this.value == null) return;
+    this.innerTextValue = this.formatVal(this.value);
+    this.textValueChanged = false;
+  }
+
+  writeValue(value: T): void {
+    super.writeValue(value);
+
+    this.innerTextValue = this.formatVal(value);
+    this.textValueInvalid = false;
+    this.textValueChanged = false;
+  }
+
 }
