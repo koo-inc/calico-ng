@@ -1,0 +1,23 @@
+@import './variables';
+
+c-float {
+  width: $c-float-width;
+
+  .text-input-container {
+    position: relative;
+
+    input[type="text"] {
+      width: 100%;
+      padding-left: 28px;
+
+      &[disabled] {
+        background-color: $c-readonly-bgcolor;
+        cursor: $c-readonly-cursor;
+      }
+      &.invalid {
+        background-color: $c-invalid-bgcolor;
+        border: $c-invalid-border;
+      }
+    }
+  }
+}

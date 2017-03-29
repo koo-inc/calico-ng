@@ -45,10 +45,13 @@ export class CurrencyComponent extends FormattedTextFormItem<number> {
   @Input() allowNegative: boolean = false;
 
   validFormat(textValue: string): boolean {
+    if(textValue == null || textValue.isBlank()){
+      return true;
+    }
     if(this.allowNegative){
-      return textValue == null || textValue.isBlank() || textValue.hankaku().trim().match(/^-?[0-9,]+$/) != null;
+      return textValue.hankaku().trim().match(/^-?[0-9,]+$/) != null;
     }else{
-      return textValue == null || textValue.isBlank() || textValue.hankaku().trim().match(/^[0-9,]+$/) != null;
+      return textValue.hankaku().trim().match(/^[0-9,]+$/) != null;
     }
   }
 

@@ -3,7 +3,7 @@ import {NG_VALUE_ACCESSOR} from '@angular/forms';
 import { FormattedTextFormItem } from "./item";
 
 @Component({
-  selector: 'c-integer',
+  selector: 'c-float',
   template: `
     <span class="text-input-container">
       <input type="text" [(ngModel)]="textValue"
@@ -30,29 +30,47 @@ import { FormattedTextFormItem } from "./item";
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => IntegerComponent),
+      useExisting: forwardRef(() => FloatComponent),
       multi: true
     }
   ]
 })
-export class IntegerComponent extends FormattedTextFormItem<number> {
+export class FloatComponent extends FormattedTextFormItem<number> {
   constructor(injector: Injector) {
     super(injector);
     this.formatErrorMessage =  '正しい数値の形式ではありません。';
   }
 
-  @Input() placeholder: string = '数値';
+  @Input() placeholder: string;
+  @Input() step: number = 0.1;
   @Input() allowNegative: boolean = false;
+
+  ngOnInit(): void {
+    super.ngOnInit();
+    if(this.placeholder == null){
+      this.placeholder = '数値({0}単位)'.format(this.step);
+    }
+    if(this.step != null){
+      if(this.step.toString().match(/\.[0-9]{3,}$/)){
+        throw new Error('stepは少数2桁までしか指定できません。');
+      }
+    }
+  }
 
   validFormat(textValue: string): boolean {
     if(textValue == null || textValue.isBlank()){
       return true;
     }
+    let regexCheck;
     if(this.allowNegative){
-      return textValue.hankaku().trim().match(/^-?[0-9,]+$/) != null;
+      regexCheck = textValue.hankaku().trim().match(/^-?[0-9,]+(\.[0-9]{1,2})?$/) != null;
     }else{
-      return textValue.hankaku().trim().match(/^[0-9,]+$/) != null;
+      regexCheck = textValue.hankaku().trim().match(/^[0-9,]+(\.[0-9]{1,2})?$/) != null;
     }
+    if(!regexCheck) return false;
+
+    let val = textValue.trim().hankaku().removeAll(',').toNumber();
+    return (val * 1000) % (this.step * 1000) == 0;
   }
 
   toVal(textValue: string): number {

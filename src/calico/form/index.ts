@@ -15,6 +15,7 @@ import { TimepickerComponent } from "./timepicker.component";
 import { TextareaComponent } from "./textarea.component";
 import { IntegerComponent } from "./integer.component";
 import { CurrencyComponent } from "./currency.component";
+import { FloatComponent } from "./float.component";
 
 @NgModule({
   imports: [
@@ -38,6 +39,7 @@ import { CurrencyComponent } from "./currency.component";
     TextareaComponent,
     IntegerComponent,
     CurrencyComponent,
+    FloatComponent,
   ],
   exports: [
     ErrorTipComponent,
@@ -52,6 +54,7 @@ import { CurrencyComponent } from "./currency.component";
     TextareaComponent,
     IntegerComponent,
     CurrencyComponent,
+    FloatComponent,
   ]
 })
 export class CalicoFormModule {
