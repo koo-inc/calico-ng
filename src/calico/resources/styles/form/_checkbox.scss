@@ -48,5 +48,8 @@
   &.invalid {
     background-color: $c-invalid-bgcolor;
     border: $c-invalid-border;
+    .btn {
+      background-color: $c-invalid-bgcolor;
+    }
   }
 }

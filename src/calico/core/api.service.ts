@@ -35,7 +35,7 @@ export class Api {
     form = form instanceof AbstractControl ? form : {value: form, invalid: false, get: (key: string): any => null};
 
     if(form.invalid){
-      this.alert.warning(this.messages['invalidForm'] || '入力値に問題があります。');
+      this.alert.warning(this.messages['invalidForm'] || '入力値に問題があります。', {lifetime: 3000});
       return Observable.empty();
     }
 
@@ -53,7 +53,7 @@ export class Api {
           errors = e.json();
         } catch (e2) {
           console.error(e);
-          this.alert.warning(this.messages['internalServerError'] || '500 Internal Server Error');
+          this.alert.danger(this.messages['internalServerError'] || '500 Internal Server Error');
           throw e;
         }
         Object.keys(errors).forEach(key => {
