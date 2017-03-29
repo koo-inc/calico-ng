@@ -15,6 +15,7 @@ moment.locale('ja');
       <input type="text" [(ngModel)]="textValue"
         [class.invalid]="isInvalid()"
         [disabled]="readonly"
+        [placeholder]="placeholder"
         #popover="bs-popover"
         [popover]="popoverTpl"
         placement="bottom"
@@ -71,8 +72,7 @@ export class DatepickerComponent extends FormItem {
   @Input() defaultDate: Date = new Date();
   @Input() minDate: Date;
   @Input() maxDate: Date;
-  @Input() placeholder: string;
-  @Input() disabled: any;
+  @Input() placeholder: string = '日付';
 
   innerTextValue: string;
   textChanged: boolean = false;

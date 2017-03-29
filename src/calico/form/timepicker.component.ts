@@ -10,6 +10,7 @@ import { FormItem } from "./item";
       <input type="text" [(ngModel)]="textValue"
         [class.invalid]="isInvalid()"
         [disabled]="readonly"
+        [placeholder]="placeholder"
         #popover="bs-popover"
         [popover]="popoverTpl"
         placement="bottom"
@@ -62,7 +63,7 @@ export class TimepickerComponent extends FormItem {
   @Input() defaultDate: Date = Date.create('00:00');
   @Input() stepHour: number = 1;
   @Input() stepMinute: number = 5;
-  @Input() disabled: any;
+  @Input() placeholder: string = '時間';
 
   innerTextValue: string;
   textChanged: boolean = false;
