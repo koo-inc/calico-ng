@@ -88,11 +88,7 @@ export abstract class FormattedTextFormItem<T> extends FormItem {
       this.textValueInvalid = !this.validFormat(value);
       this.textValueChanged = true;
       this.value = this.toVal(value);
-      if(this.textValueInvalid){
-        this.addError(this.formatErrorMessage);
-      }else{
-        this.removeError(this.formatErrorMessage)
-      }
+      this.setFormatError();
     }
   }
 
@@ -103,12 +99,23 @@ export abstract class FormattedTextFormItem<T> extends FormItem {
     this.textValueChanged = false;
   }
 
+  setFormatError(): void {
+    if(this.textValueInvalid){
+      this.addError(this.formatErrorMessage);
+    }else{
+      this.removeError(this.formatErrorMessage)
+    }
+  }
+
   writeValue(value: T): void {
     super.writeValue(value);
 
     this.innerTextValue = this.formatVal(value);
-    this.textValueInvalid = false;
+    this.textValueInvalid = !this.validFormat(this.innerTextValue);
     this.textValueChanged = false;
+    setTimeout(() => {
+      this.setFormatError();
+    });
   }
 
 }
