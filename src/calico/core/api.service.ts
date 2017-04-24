@@ -19,6 +19,8 @@ export const REQUEST_HOOK = new InjectionToken<RequestHook>('RequestHook');
 
 @Injectable()
 export class Api {
+  private headers: {name: string, value: string}[] = [];
+
   constructor(
     private http: Http,
     private alert: AlertService,
@@ -26,6 +28,12 @@ export class Api {
     @Optional() @Inject(REQUEST_HOOK) private requestHooks: RequestHook[]
   ) {
     this.requestHooks = this.requestHooks || [];
+  }
+
+  header(name: string, value: string): Api {
+    let api = new Api(this.http, this.alert, this.messages, this.requestHooks);
+    api.headers = this.headers.clone().add({name: name, value: value});
+    return api;
   }
 
   submit<T> (url: string): Observable<T>;
@@ -41,6 +49,7 @@ export class Api {
 
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
+    this.headers.forEach(h => headers.append(h.name, h.value));
     let options = new RequestOptions({headers: headers});
 
     let observable = this.http.post(url, JSON.stringify(form.value), options);
