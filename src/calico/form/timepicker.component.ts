@@ -60,7 +60,7 @@ export class TimepickerComponent extends FormItem {
     super(injector);
   }
 
-  @Input() defaultDate: Date = Date.create('00:00');
+  @Input() defaultDate: Date = this.toDate('00:00');
   @Input() stepHour: number = 1;
   @Input() stepMinute: number = 5;
   @Input() placeholder: string = '時間';
@@ -83,11 +83,11 @@ export class TimepickerComponent extends FormItem {
     }
   }
   isInvalidText(): boolean {
-    return this.innerTextValue != null && this.innerTextValue != '' && this.timepickerValue == null;
+    return this.innerTextValue != null && this.innerTextValue != '' && this.timepickerValue === this.defaultDate;
   }
   adjustTextValue(): void {
     if(!this.textChanged) return;
-    if(this.timepickerValue != null){
+    if(this.timepickerValue !== this.defaultDate){
       this.innerTextValue = this.formatDate(this.timepickerValue);
     }
     this.textChanged = false;
@@ -96,10 +96,11 @@ export class TimepickerComponent extends FormItem {
   innerTimepickerValue: Date;
 
   get timepickerValue(): Date {
-    return this.innerTimepickerValue;
+    return this.innerTimepickerValue || this.defaultDate;
   }
   set timepickerValue(value: Date) {
-    if (!Object.isEqual(value, this.innerTimepickerValue)) {
+    value = this.toDate(value);
+    if (!Object.isEqual(value, this.innerTimepickerValue) && value !== this.defaultDate) {
       this.innerTimepickerValue = value;
       this.innerTextValue = this.formatDate(value);
       this.textChanged = false;
@@ -108,29 +109,24 @@ export class TimepickerComponent extends FormItem {
   }
 
   writeValue(value: any): void {
-    super.writeValue(value);
+    let date = this.toDate(value);
+    super.writeValue(date);
 
-    if(value == null || value == ''){
-      this.innerTextValue = null;
-    }else if(Object.isDate(value)){
-      this.innerTextValue = this.formatDate(value);
-    }else if(!Object.isDate(value)){
-      this.innerTextValue = this.formatDate(this.toDate(value));
-    }
+    this.innerTextValue = this.formatDate(date);
     this.textChanged = false;
 
-    if(value == null || value == ''){
-      this.innerTimepickerValue = null;
-    }else if(Object.isDate(value)){
-      this.innerTimepickerValue = value;
-    }else if(!Object.isDate(value)){
-      this.innerTimepickerValue = this.toDate(value);
-    }
+    this.innerTimepickerValue = date;
   }
 
   private toDate(value: any): Date {
-    let d: any = Date.create(value);
-    return d == 'Invalid Date' ? null : d;
+    if (value == null || value == '') return null;
+    if (typeof value === 'string' && (value.length < 5 || value.indexOf(':') < 0)) return null;
+    let d = value instanceof Date ? value : Date.create(value);
+    if (isNaN(d.getTime())) return null;
+    let offset = d.getTimezoneOffset();
+    let mills = ((Math.floor(d.getTime() / (1).minute()) - offset) % (24 * 60) + offset) * (1).minutes();
+    if (d.getTime() === mills) return d;
+    return Date.create(mills);
   }
 
   private formatDate(value: Date): string {
