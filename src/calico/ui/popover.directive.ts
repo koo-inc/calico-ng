@@ -1,4 +1,6 @@
-import { ViewContainerRef, Renderer, ElementRef, TemplateRef, Directive, Input, OnDestroy } from "@angular/core";
+import {
+  ViewContainerRef, ElementRef, TemplateRef, Directive, Input, OnDestroy, Renderer2, Renderer
+} from "@angular/core";
 import { ComponentLoaderFactory, PopoverDirective as NgPopoverDirective } from "ng2-bootstrap";
 
 class PopoverListener {
@@ -109,7 +111,7 @@ export class PopoverDirective implements OnDestroy {
   }
 
   private get popoverContent(): HTMLElement[] {
-    return this.popover['_popover']['_contentRef']['nodes'][0] as HTMLElement[];
+    return this.popover['_popover']['_componentRef']['_viewRef']['rootNodes'][0] as HTMLElement[];
   }
 
   _removeIfNotHaving(elm: HTMLElement) {
