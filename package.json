@@ -1,6 +1,6 @@
 {
   "name": "calico-ng",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "license": "MIT",
   "main": "packages/calico/index.js",
   "angular-cli": {},
