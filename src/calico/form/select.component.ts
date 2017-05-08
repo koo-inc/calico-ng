@@ -1,6 +1,8 @@
-import { Component, forwardRef, Injector, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, forwardRef, Injector, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { FormItem } from "./item";
+import { Subscription } from "rxjs/Subscription";
+import { Observable } from "rxjs/Observable";
 
 @Component({
   selector: 'c-select',
@@ -30,12 +32,12 @@ import { FormItem } from "./item";
     }
   ]
 })
-export class SelectComponent extends FormItem implements OnChanges {
+export class SelectComponent extends FormItem implements OnChanges, OnDestroy {
   constructor(injector: Injector) {
     super(injector);
   }
 
-  @Input() options: any[] = [];
+  @Input() options: any[] | Observable<any[]> = [];
   @Input() optionKey: string = 'id';
   @Input() optionLabel: string = 'name';
   @Input() optionValue: string = null;
@@ -44,6 +46,8 @@ export class SelectComponent extends FormItem implements OnChanges {
 
   private innerSelectValue: any;
   private innerOptions: SelectOption[];
+
+  private subscription: Subscription;
 
   ngOnInit(): void {
     super.ngOnInit();
@@ -81,15 +85,36 @@ export class SelectComponent extends FormItem implements OnChanges {
     }
   }
 
+  ngOnDestroy(): void {
+    if (this.subscription != null) {
+      this.subscription.unsubscribe();
+      this.subscription = null;
+    }
+  }
+
   private initOptions() {
+    if (this.subscription != null) {
+      this.subscription.unsubscribe();
+      this.subscription = null;
+    }
+
     this.innerOptions = [];
     if(this.nullOption){
       this.innerOptions.push({ key: null, label: this.nullOptionLabel, value: null });
     }
-    if(this.options == null || this.options.length == 0){
+    if(this.options == null || this.options['length'] === 0){
       return;
     }
-    for(let option of this.options){
+
+    if (this.options instanceof Observable) {
+      this.subscription = this.options.subscribe(this.setupOptions.bind(this));
+    }
+    else {
+      this.setupOptions(this.options);
+    }
+  }
+  private setupOptions(options: any[]) {
+    for(let option of options){
       let key = this.getOptionKey(option);
       let label = this.getOptionLabel(option);
       let value = this.getOptionValue(option);
@@ -114,7 +139,6 @@ export class SelectComponent extends FormItem implements OnChanges {
     }
     return option[this.optionValue];
   }
-
 }
 
 interface SelectOption {
