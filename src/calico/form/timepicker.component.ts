@@ -1,6 +1,6 @@
 import { Component, forwardRef, Injector, Input, ViewChild } from '@angular/core';
 import {NG_VALUE_ACCESSOR} from '@angular/forms';
-import { PopoverDirective } from "ng2-bootstrap";
+import { PopoverDirective } from "../ui/popover.directive";
 import { FormItem } from "./item";
 
 @Component({
@@ -11,11 +11,8 @@ import { FormItem } from "./item";
         [class.invalid]="isInvalid()"
         [disabled]="readonly"
         [placeholder]="placeholder"
-        #popover="bs-popover"
-        [popover]="popoverTpl"
-        placement="bottom"
-        container="body"
-        triggers=""
+        #popover="cPopover"
+        [cPopover]="popoverTpl"
         (focus)="onFocus($event)"
         (blur)="onBlur($event)"
         (click)="onClick($event)"
@@ -74,12 +71,12 @@ export class TimepickerComponent extends FormItem {
   set textValue(value: string) {
     if (value !== this.innerTextValue) {
       this.textChanged = true;
-      this.popover.hide();
+      this.popover.close();
       this.innerTextValue = value;
       let d: Date = this.toDate(this.innerTextValue);
       this.innerTimepickerValue = d;
       this.value = d != null ? d.toISOString() : null;
-      this.popover.show();
+      this.popover.open();
     }
   }
   isInvalidText(): boolean {
@@ -145,11 +142,11 @@ export class TimepickerComponent extends FormItem {
   }
 
   onClick(): void {
-    this.popover.show();
+    this.popover.open();
   }
 
   onFocus(): void {
-    this.popover.show();
+    this.popover.open();
   }
 
   onBlur($event: any): void {
@@ -157,7 +154,7 @@ export class TimepickerComponent extends FormItem {
       $event.target.focus();
       this.keepFlag = false;
     }else{
-      this.popover.hide();
+      this.popover.close();
     }
     this.adjustTextValue();
   }

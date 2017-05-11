@@ -1,11 +1,11 @@
 import { Component, forwardRef, Injector, Input, ViewChild } from '@angular/core';
 import {NG_VALUE_ACCESSOR} from '@angular/forms';
-import { PopoverDirective } from "ng2-bootstrap";
 import { FormItem } from "./item";
 
 // https://github.com/valor-software/ng2-bootstrap/issues/455
 import 'moment/locale/ja';
 import * as moment from 'moment';
+import { PopoverDirective } from "../ui/popover.directive";
 moment.locale('ja');
 
 @Component({
@@ -16,11 +16,8 @@ moment.locale('ja');
         [class.invalid]="isInvalid()"
         [disabled]="readonly"
         [placeholder]="placeholder"
-        #popover="bs-popover"
-        [popover]="popoverTpl"
-        placement="bottom"
-        container="body"
-        triggers=""
+        #popover="cPopover"
+        [cPopover]="popoverTpl"
         (focus)="onFocus($event)"
         (blur)="onBlur($event)"
         (click)="onClick($event)"
@@ -83,12 +80,12 @@ export class DatepickerComponent extends FormItem {
   set textValue(value: string) {
     if (value !== this.innerTextValue) {
       this.textChanged = true;
-      this.popover.hide();
+      this.popover.close();
       this.innerTextValue = value;
       let d: Date = this.toDate(this.innerTextValue);
       this.innerDatepickerValue = d;
       this.value = d != null ? d.toISOString() : null;
-      this.popover.show();
+      this.popover.close();
     }
   }
   isInvalidText(): boolean {
@@ -158,11 +155,11 @@ export class DatepickerComponent extends FormItem {
   }
 
   onClick(): void {
-    this.popover.show();
+    this.popover.open();
   }
 
   onFocus(): void {
-    this.popover.show();
+    this.popover.open();
   }
 
   onBlur($event: any): void {
@@ -170,14 +167,14 @@ export class DatepickerComponent extends FormItem {
       $event.target.focus();
       this.keepFlag = false;
     }else{
-      this.popover.hide();
+      this.popover.close();
     }
     this.adjustTextValue();
   }
 
   selectionDone(): void {
     setTimeout(() => {
-      this.popover.hide();
+      this.popover.close();
     });
   }
 }

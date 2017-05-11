@@ -16,6 +16,7 @@ import { TextareaComponent } from "./textarea.component";
 import { IntegerComponent } from "./integer.component";
 import { CurrencyComponent } from "./currency.component";
 import { FloatComponent } from "./float.component";
+import { CalicoUiModule } from "../ui";
 
 @NgModule({
   imports: [
@@ -25,6 +26,7 @@ import { FloatComponent } from "./float.component";
     PopoverModule,
     DatepickerModule,
     TimepickerModule,
+    CalicoUiModule,
   ],
   declarations: [
     ErrorTipComponent,

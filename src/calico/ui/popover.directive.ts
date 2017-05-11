@@ -5,19 +5,19 @@ import { ComponentLoaderFactory, PopoverDirective as NgPopoverDirective } from "
 
 class PopoverListener {
   popovers: PopoverDirective[] = [];
-  private _triggerEvents = ['focus', 'click'];
+  private _triggerEvents = ['focus', 'mousedown', 'touchstart', 'click'];
 
   private _listener: (e: Event) => void;
 
   constructor() {
-    this._listener = (e: Event) => {
+    this._listener = (function(e: Event) {
       for (let i = this.popovers.length - 1; i >= 0; i--) {
         let removed = this.popovers[i]._removeIfNotHaving(e.target as HTMLElement);
         if (removed == null) {
           return;
         }
       }
-    }
+    }).throttle(500).bind(this);
   }
 
   attach(popover: PopoverDirective): void {
@@ -110,8 +110,8 @@ export class PopoverDirective implements OnDestroy {
     listener.detach(this);
   }
 
-  private get popoverContent(): HTMLElement[] {
-    return this.popover['_popover']['_componentRef']['_viewRef']['rootNodes'][0] as HTMLElement[];
+  private get popoverContent(): HTMLElement {
+    return this.popover['_popover']['_componentRef']['_viewRef']['rootNodes'][0] as HTMLElement;
   }
 
   _removeIfNotHaving(elm: HTMLElement) {
