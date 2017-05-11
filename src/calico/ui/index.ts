@@ -1,6 +1,6 @@
 import { NgModule, ModuleWithProviders } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { ModalModule } from "ng2-bootstrap";
+import { ModalModule } from "ngx-bootstrap";
 
 import { InfoTableDirective, ListTableDirective, } from './table.directive';
 import { ButtonDirective } from "./button.directive";

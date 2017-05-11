@@ -1,7 +1,7 @@
 import {
   ViewContainerRef, ElementRef, TemplateRef, Directive, Input, OnDestroy, Renderer2, Renderer
 } from "@angular/core";
-import { ComponentLoaderFactory, PopoverDirective as NgPopoverDirective } from "ng2-bootstrap";
+import { ComponentLoaderFactory, PopoverDirective as NgPopoverDirective } from "ngx-bootstrap";
 
 class PopoverListener {
   popovers: PopoverDirective[] = [];

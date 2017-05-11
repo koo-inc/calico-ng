@@ -2,7 +2,7 @@ import {
   Component, Input, ContentChild, ViewChild, EventEmitter, Output, ElementRef, OnInit,
   Inject
 } from '@angular/core';
-import { ModalDirective } from "ng2-bootstrap";
+import { ModalDirective } from "ngx-bootstrap";
 import { DOCUMENT } from "@angular/platform-browser";
 
 @Component({

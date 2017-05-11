@@ -1,7 +1,7 @@
 import { NgModule, ModuleWithProviders } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { DatepickerModule, PopoverModule, TimepickerModule } from "ng2-bootstrap";
+import { DatepickerModule, PopoverModule, TimepickerModule } from "ngx-bootstrap";
 
 import { ErrorTipComponent } from "./errortip.component";
 import { TextFieldComponent } from "./textfield.component";
