@@ -1,8 +1,10 @@
-import { Injectable, Injector } from '@angular/core';
+import { Injectable, InjectionToken, Injector } from '@angular/core';
 import {Observable} from "rxjs";
 
 import { Api } from "./api.service";
 import { LocalStorageService } from "./local-storage.service";
+
+export const EXT_ENUM_SERVICE_CONFIG = new InjectionToken<ExtEnumServiceConfig>('ExtEnumServiceConfig');
 
 @Injectable()
 export class ExtEnumService {
@@ -14,7 +16,14 @@ export class ExtEnumService {
     private localStorageService: LocalStorageService,
     injector: Injector,
   ) {
-    let config: ExtEnumServiceConfig = injector.get("ExtEnumServiceConfig", null);
+    let config: ExtEnumServiceConfig;
+    try {
+      config = injector.get(EXT_ENUM_SERVICE_CONFIG);
+    }
+    catch (e) {
+      console.warn("use EXT_ENUM_SERVICE_CONFIG token to provide ExtEnumServiceConfig instead of 'ExtEnumServiceConfig' string.");
+      config = injector.get("ExtEnumServiceConfig", null);
+    }
     if (config != null) {
       this.apiPath = config.apiPath;
       if(config.cacheKeyPrefix != null){

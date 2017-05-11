@@ -1,4 +1,4 @@
-import {Injectable, Injector} from '@angular/core';
+import { Injectable, InjectionToken, Injector } from '@angular/core';
 import {SerializeService} from "./serialize.service";
 
 export interface LocalStorageServiceConfig {
@@ -7,6 +7,8 @@ export interface LocalStorageServiceConfig {
   version?: string;
 }
 
+export const LOCAL_STORAGE_SERVICE_CONFIG = new InjectionToken<LocalStorageServiceConfig>('LocalStorageServiceConfig');
+
 @Injectable()
 export class LocalStorageService {
   private localStorage: Storage;
@@ -14,7 +16,14 @@ export class LocalStorageService {
   private version: string;
 
   constructor(private serializeService: SerializeService, injector: Injector) {
-    let config: LocalStorageServiceConfig = injector.get("LocalStorageServiceConfig", null);
+    let config: LocalStorageServiceConfig;
+    try {
+      config = injector.get(LOCAL_STORAGE_SERVICE_CONFIG);
+    }
+    catch(e) {
+      console.warn("use LOCAL_STORAGE_SERVICE_CONFIG token to provide LocalStorageServiceConfig instead of 'LocalStorageServiceConfig' string.");
+      config = injector.get("LocalStorageServiceConfig", null);
+    }
     if (config != null) {
       this.localStorage = config.storage;
       this.prefix = config.prefix;

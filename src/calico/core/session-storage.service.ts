@@ -1,4 +1,4 @@
-import {Injectable, Injector} from '@angular/core';
+import { Injectable, InjectionToken, Injector } from '@angular/core';
 import {SerializeService} from "./serialize.service";
 
 export interface SessionStorageServiceConfig {
@@ -7,6 +7,8 @@ export interface SessionStorageServiceConfig {
   version?: string;
 }
 
+export const SESSION_STORAGE_SERVICE_CONFIG = new InjectionToken<SessionStorageServiceConfig>('SessionStorageServiceConfig');
+
 @Injectable()
 export class SessionStorageService {
   private sessionStorage: Storage;
@@ -14,7 +16,14 @@ export class SessionStorageService {
   private version: string;
 
   constructor(private serializeService: SerializeService, injector: Injector) {
-    let config: SessionStorageServiceConfig = injector.get("SessionStorageServiceConfig", null);
+    let config: SessionStorageServiceConfig;
+    try {
+      config = injector.get(SESSION_STORAGE_SERVICE_CONFIG);
+    }
+    catch(e) {
+      console.warn("use SESSION_STORAGE_SERVICE_CONFIG token to provide SessionStorageServiceConfig instead of 'SessionStorageServiceConfig' string.");
+      config = injector.get("SessionStorageServiceConfig", null);
+    }
     if (config != null) {
       this.sessionStorage = config.storage;
       this.prefix = config.prefix;

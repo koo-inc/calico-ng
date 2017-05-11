@@ -1,13 +1,21 @@
-import { Injectable, Component, Injector } from "@angular/core";
+import { Injectable, Component, Injector, InjectionToken } from "@angular/core";
 import { trigger, style, transition, animate, keyframes } from "@angular/animations";
 import { randomString } from "../util/string";
+
+export const ALERT_CONFIG = new InjectionToken<AlertConfig>('AlertConfig');
 
 @Injectable()
 export class AlertService {
   constructor(
     private injector: Injector
   ) {
-    this.config = this.injector.get('AlertConfig', {});
+    try {
+      this.config = this.injector.get(ALERT_CONFIG);
+    }
+    catch (e) {
+      console.warn("use ALERT_CONFIG token to provide AlertConfig instead of 'AlertConfig' string.");
+      this.config = this.injector.get('AlertConfig', {});
+    }
   }
 
   config: AlertConfig;
