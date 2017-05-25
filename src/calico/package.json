@@ -1,6 +1,6 @@
 {
   "name": "calico",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "experimentalDecorators": true,
   "dependencies": {
     "sugar": "^2.0.4",
