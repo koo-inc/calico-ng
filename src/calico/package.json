@@ -2,6 +2,7 @@
   "name": "calico",
   "version": "0.4.1",
   "experimentalDecorators": true,
+  "main": "index.ts",
   "dependencies": {
     "sugar": "^2.0.4",
     "font-awesome": "^4.7.0",

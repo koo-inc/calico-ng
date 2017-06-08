@@ -100,6 +100,11 @@ export class RequestWatcher implements RequestHook {
   }
 }
 
+const REQUEST_WATCHER = new RequestWatcher();
+export function requestWatcherFactory() {
+  return REQUEST_WATCHER;
+}
+
 @Pipe({ name: 'submitting', pure: false })
 export class SubmittingPipe implements PipeTransform {
   constructor(
