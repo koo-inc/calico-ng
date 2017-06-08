@@ -2,8 +2,10 @@
   "name": "calico",
   "version": "0.4.1",
   "experimentalDecorators": true,
+  "main": "index.ts",
   "dependencies": {
     "sugar": "^2.0.4",
+    "sugar-language": "^2.0.4",
     "font-awesome": "^4.7.0",
     "moment": "^2.18.1",
     "ngx-bootstrap": "^1.6.6"
