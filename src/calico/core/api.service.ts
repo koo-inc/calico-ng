@@ -100,7 +100,7 @@ export class RequestWatcher implements RequestHook {
   }
 }
 
-const REQUEST_WATCHER = new RequestWatcher();
+export const REQUEST_WATCHER = new RequestWatcher();
 export function requestWatcherFactory() {
   return REQUEST_WATCHER;
 }
