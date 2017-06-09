@@ -72,7 +72,7 @@ export class EnumSelectComponent extends FormItem implements OnInit, OnChanges {
 
   writeValue(value: any) {
     super.writeValue(value);
-    this.option = this.findOption(value);
+    this._option = this.findOption(value);
   }
 
   private initOptions() {
