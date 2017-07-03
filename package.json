@@ -33,7 +33,7 @@
     "sugar": "^2.0.4",
     "sugar-language": "^2.0.4",
     "ts-helpers": "^1.1.1",
-    "typescript": "^2.2.2",
+    "typescript": "2.3.4",
     "zone.js": "^0.8.9"
   },
   "devDependencies": {
