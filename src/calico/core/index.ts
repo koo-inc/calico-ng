@@ -5,15 +5,18 @@ import { SessionStorageService } from "./session-storage.service";
 import { SerializeService } from "./serialize.service";
 import { Api, SubmittingPipe, RequestWatcher, REQUEST_HOOK, requestWatcherFactory } from "./api.service";
 import { ExtEnumService } from "./ext-enum.service";
+import { ExtEnumPipe } from "./ext-enum.pipe";
 
 @NgModule({
   imports: [
   ],
   declarations: [
     SubmittingPipe,
+    ExtEnumPipe,
   ],
   exports: [
     SubmittingPipe,
+    ExtEnumPipe,
   ]
 })
 export class CalicoCoreModule {
