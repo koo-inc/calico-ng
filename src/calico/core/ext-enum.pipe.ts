@@ -8,18 +8,21 @@ export class ExtEnumPipe implements PipeTransform, OnDestroy {
     private extEnumService: ExtEnumService,
   ) {}
 
-  private key: string;
-  private result: any;
+  private value: any;
+  private enumName: string;
+  private propName: string;
   private subscription: Subscription;
+  private result: any;
 
   transform(value: any, ...args: any[]): any {
     let enumName = args[0];
     let propName = args[1] || 'name';
-    let key = '{0}:{1}:{2}'.format(enumName, propName, value);
 
-    if(key != this.key){
+    if(value != this.value || enumName != this.enumName || propName != this.propName){
       this.clean();
-      this.key = key;
+      this.value = value;
+      this.enumName = enumName;
+      this.propName = propName;
       this.subscription = this.extEnumService.values(enumName).subscribe(data => {
         let record = data[enumName].find((e: ExtEnumData) => {return e.id == value});
         this.result = record ? record[propName] : null;
@@ -36,9 +39,11 @@ export class ExtEnumPipe implements PipeTransform, OnDestroy {
     if(this.subscription){
       this.subscription.unsubscribe();
     }
-    this.key = null;
-    this.result = null;
+    this.value = null;
+    this.enumName = null;
+    this.propName = null;
     this.subscription = null;
+    this.result = null;
   }
 
 }
