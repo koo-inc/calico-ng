@@ -6,6 +6,7 @@ import { SerializeService } from "./serialize.service";
 import { Api, SubmittingPipe, RequestWatcher, REQUEST_HOOK, requestWatcherFactory } from "./api.service";
 import { ExtEnumService } from "./ext-enum.service";
 import { ExtEnumPipe } from "./ext-enum.pipe";
+import { RemoteDataService, EnsureRemoteData } from "./remote-data.service";
 
 @NgModule({
   imports: [
@@ -31,6 +32,8 @@ export class CalicoCoreModule {
         {provide: REQUEST_HOOK, useExisting: RequestWatcher, multi: true},
         Api,
         ExtEnumService,
+        RemoteDataService,
+        EnsureRemoteData,
       ]
     };
   }
@@ -41,3 +44,4 @@ export { SessionStorageService, SessionStorageServiceConfig } from "./session-st
 export { SerializeService } from "./serialize.service";
 export { Api, MessageConfig, MESSAGE_CONFIG } from "./api.service";
 export { ExtEnumService, ExtEnumServiceConfig, ExtEnum, ExtEnumData } from "./ext-enum.service";
+export { RemoteDataService, EnsureRemoteData, RemoteDataType, REMOTE_DATA_TYPE } from "./remote-data.service";
