@@ -4,6 +4,7 @@ import { FormItem } from "./item";
 import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
 import { ExtEnumService } from "../core/ext-enum.service";
+import { RemoteDataService } from "../core/remote-data.service";
 
 @Component({
   selector: 'c-checkboxes',
@@ -38,11 +39,13 @@ export class CheckboxesComponent extends FormItem implements OnChanges, OnDestro
   constructor(
     injector: Injector,
     private extEnumService: ExtEnumService,
+    private remoteDataService: RemoteDataService,
   ) {
     super(injector);
   }
 
   @Input() options: any[] | Observable<any[]> = null;
+  @Input() remoteData: string;
   @Input() extEnum: string;
   @Input() optionKey: string = 'id';
   @Input() optionLabel: string = 'name';
@@ -98,6 +101,15 @@ export class CheckboxesComponent extends FormItem implements OnChanges, OnDestro
         this.subscription = this.options.subscribe(this.setupOptions.bind(this));
       } else {
         this.setupOptions(this.options);
+      }
+    }else if(this.remoteData != null){
+      let remoteDataType = this.remoteDataService.getType(this.remoteData);
+      if(remoteDataType.ensure){
+        this.setupOptions(this.remoteDataService.get(remoteDataType));
+      }else{
+        this.remoteDataService.getAsAsync(remoteDataType).then((data) => {
+          this.setupOptions(data);
+        });
       }
     }else if(this.extEnum != null){
       this.setupOptions(this.extEnumService.getValues(this.extEnum));
