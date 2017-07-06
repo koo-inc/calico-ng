@@ -16,7 +16,6 @@ import { TextareaComponent } from "./textarea.component";
 import { IntegerComponent } from "./integer.component";
 import { CurrencyComponent } from "./currency.component";
 import { FloatComponent } from "./float.component";
-import { EnumSelectComponent } from "./enum-select.component";
 import { CalicoUiModule } from "../ui";
 
 @NgModule({
@@ -43,7 +42,6 @@ import { CalicoUiModule } from "../ui";
     IntegerComponent,
     CurrencyComponent,
     FloatComponent,
-    EnumSelectComponent,
   ],
   exports: [
     ErrorTipComponent,
@@ -59,7 +57,6 @@ import { CalicoUiModule } from "../ui";
     IntegerComponent,
     CurrencyComponent,
     FloatComponent,
-    EnumSelectComponent,
   ]
 })
 export class CalicoFormModule {
