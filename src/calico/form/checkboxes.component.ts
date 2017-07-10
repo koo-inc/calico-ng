@@ -1,6 +1,10 @@
-import { Component, forwardRef, Injector, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, forwardRef, Injector, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { FormItem } from "./item";
+import { Observable } from "rxjs/Observable";
+import { Subscription } from "rxjs/Subscription";
+import { ExtEnumService } from "../core/ext-enum.service";
+import { RemoteDataService } from "../core/remote-data.service";
 
 @Component({
   selector: 'c-checkboxes',
@@ -31,17 +35,25 @@ import { FormItem } from "./item";
     }
   ]
 })
-export class CheckboxesComponent extends FormItem implements OnChanges {
-  constructor(injector: Injector) {
+export class CheckboxesComponent extends FormItem implements OnChanges, OnDestroy {
+  constructor(
+    injector: Injector,
+    private extEnumService: ExtEnumService,
+    private remoteDataService: RemoteDataService,
+  ) {
     super(injector);
   }
 
-  @Input() options: any[] = [];
+  @Input() options: any[] | Observable<any[]> = null;
+  @Input() remoteData: string;
+  @Input() extEnum: string;
   @Input() optionKey: string = 'id';
   @Input() optionLabel: string = 'name';
   @Input() optionValue: string = null;
 
   private innerOptions: CheckboxOption[];
+
+  private subscription: Subscription;
 
   ngOnInit(): void {
     super.ngOnInit();
@@ -60,24 +72,57 @@ export class CheckboxesComponent extends FormItem implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if(Object.has(changes, 'options')
+      || Object.has(changes, 'extEnum')
       || Object.has(changes, 'optionLabel')
     ){
       this.initOptions();
-      this.setSelected(this.value);
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription != null) {
+      this.subscription.unsubscribe();
+      this.subscription = null;
     }
   }
 
   private initOptions(): void {
-    this.innerOptions = [];
-    if(this.options == null || this.options.length == 0){
-      return;
+    if (this.subscription != null) {
+      this.subscription.unsubscribe();
+      this.subscription = null;
     }
-    for(let option of this.options){
+
+    this.innerOptions = [];
+    if(this.options != null){
+      if(this.options['length'] === 0){
+        return;
+      }
+      if (this.options instanceof Observable) {
+        this.subscription = this.options.subscribe(this.setupOptions.bind(this));
+      } else {
+        this.setupOptions(this.options);
+      }
+    }else if(this.remoteData != null){
+      let remoteDataType = this.remoteDataService.getType(this.remoteData);
+      if(remoteDataType.ensure){
+        this.setupOptions(this.remoteDataService.get(remoteDataType));
+      }else{
+        this.remoteDataService.getAsAsync(remoteDataType).then((data) => {
+          this.setupOptions(data);
+        });
+      }
+    }else if(this.extEnum != null){
+      this.setupOptions(this.extEnumService.getValues(this.extEnum));
+    }
+  }
+  private setupOptions(options: any[]) {
+    for(let option of options){
       let key = this.getOptionKey(option);
       let label = this.getOptionLabel(option);
       let value = this.getOptionValue(option);
       this.innerOptions.push({ key: key, label: label, value: value, selected: false });
     }
+    this.setSelected(this.value);
   }
   private getOptionKey(option: any): any {
     if(this.optionKey == null || !Object.isObject(option)){

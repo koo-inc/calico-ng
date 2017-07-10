@@ -3,6 +3,8 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { FormItem } from "./item";
 import { Subscription } from "rxjs/Subscription";
 import { Observable } from "rxjs/Observable";
+import { ExtEnumService } from "../core/ext-enum.service";
+import { RemoteDataService } from "../core/remote-data.service";
 
 @Component({
   selector: 'c-select',
@@ -33,11 +35,17 @@ import { Observable } from "rxjs/Observable";
   ]
 })
 export class SelectComponent extends FormItem implements OnChanges, OnDestroy {
-  constructor(injector: Injector) {
+  constructor(
+    injector: Injector,
+    private extEnumService: ExtEnumService,
+    private remoteDataService: RemoteDataService,
+  ) {
     super(injector);
   }
 
-  @Input() options: any[] | Observable<any[]> = [];
+  @Input() options: any[] | Observable<any[]> = null;
+  @Input() remoteData: string;
+  @Input() extEnum: string;
   @Input() optionKey: string = 'id';
   @Input() optionLabel: string = 'name';
   @Input() optionValue: string = null;
@@ -76,12 +84,12 @@ export class SelectComponent extends FormItem implements OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges): void {
     if(Object.has(changes, 'options')
+        || Object.has(changes, 'extEnum')
         || Object.has(changes, 'optionLabel')
         || Object.has(changes, 'nullOption')
         || Object.has(changes, 'nullOptionLabel')
     ){
       this.initOptions();
-      this.innerSelectValue = this.getOptionKey(this.value);
     }
   }
 
@@ -102,15 +110,26 @@ export class SelectComponent extends FormItem implements OnChanges, OnDestroy {
     if(this.nullOption){
       this.innerOptions.push({ key: null, label: this.nullOptionLabel, value: null });
     }
-    if(this.options == null || this.options['length'] === 0){
-      return;
-    }
-
-    if (this.options instanceof Observable) {
-      this.subscription = this.options.subscribe(this.setupOptions.bind(this));
-    }
-    else {
-      this.setupOptions(this.options);
+    if(this.options != null){
+      if(this.options['length'] === 0){
+        return;
+      }
+      if (this.options instanceof Observable) {
+        this.subscription = this.options.subscribe(this.setupOptions.bind(this));
+      } else {
+        this.setupOptions(this.options);
+      }
+    }else if(this.remoteData != null){
+      let remoteDataType = this.remoteDataService.getType(this.remoteData);
+      if(remoteDataType.ensure){
+        this.setupOptions(this.remoteDataService.get(remoteDataType));
+      }else{
+        this.remoteDataService.getAsAsync(remoteDataType).then((data) => {
+          this.setupOptions(data);
+        });
+      }
+    }else if(this.extEnum != null){
+      this.setupOptions(this.extEnumService.getValues(this.extEnum));
     }
   }
   private setupOptions(options: any[]) {
@@ -120,6 +139,7 @@ export class SelectComponent extends FormItem implements OnChanges, OnDestroy {
       let value = this.getOptionValue(option);
       this.innerOptions.push({ key: key, label: label, value: value });
     }
+    this.innerSelectValue = this.getOptionKey(this.value);
   }
   private getOptionKey(option: any){
     if(this.optionKey == null || !Object.isObject(option)){

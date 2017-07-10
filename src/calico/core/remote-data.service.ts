@@ -12,6 +12,7 @@ export interface RemoteDataType<T> {
   transform?: (rawData: any) => T;
   expired?: (rawData: any) => boolean;
   localStorageCahche?: boolean;
+  ensure?: boolean
 }
 export const REMOTE_DATA_TYPE = new InjectionToken<RemoteDataType<any>>('RemoteDataType');
 
@@ -48,10 +49,17 @@ export class RemoteDataService {
     if(type.localStorageCahche == null){
       type.localStorageCahche = true;
     }
+    if(type.ensure == null){
+      type.ensure = true;
+    }
   }
 
   private getHolder<T>(type: RemoteDataType<T>): RemoteDataHolder<T> {
     return this.holderMap[type.key] as RemoteDataHolder<T>;
+  }
+
+  getType(key: string): RemoteDataType<any> {
+    return this.holderMap[key].type;
   }
 
   get<T>(type: RemoteDataType<T>): T {
@@ -68,7 +76,10 @@ export class RemoteDataService {
 
   ensure(): Promise<boolean> {
     return Promise.all(
-      Object.keys(this.holderMap).map((key: string) => this.holderMap[key].getAsAsync())
+      Object.keys(this.holderMap)
+        .map((key: string) => this.holderMap[key])
+        .filter((holder: RemoteDataHolder<any>) => holder.type.ensure)
+        .map((holder: RemoteDataHolder<any>) => holder.getAsAsync())
     ).then(() => true);
   }
 }
@@ -80,7 +91,7 @@ class RemoteDataHolder<T> {
   private submitting: Promise<T>;
 
   constructor(
-    private type: RemoteDataType<any>,
+    public type: RemoteDataType<any>,
     private localStorageService: LocalStorageService,
     private api: Api,
     private injector: Injector,
@@ -89,6 +100,9 @@ class RemoteDataHolder<T> {
   }
 
   get(): T {
+    if(!this.type.ensure){
+      throw new Error('RemoteData.' + this.type.key + ' is not ensured type. use getAsAsync instead.');
+    }
     if(this.data == null){
       throw new Error('RemoteData.' + this.type.key + ' is null');
     }
