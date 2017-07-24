@@ -22,8 +22,8 @@ import { Subscription } from "rxjs";
         <li *ngFor="let no of info.pageNos"
           [class.active]="info.currentPageNo == no"
           [class.ellipsis]="no == null">
-          <a *ngIf="no != null" (click)="moveTo(no)">{{no}}</a>
-          <a *ngIf="no == null">...</a>
+          <a *ngIf="no != null; else noPage" (click)="moveTo(no)">{{no}}</a>
+          <ng-template #noPage><a>...</a></ng-template>
         </li>
         <li [class.disabled]="!info.hasNextPage">
           <a (click)="moveToNext()" aria-label="Next"><span>&raquo;</span></a>
@@ -119,7 +119,9 @@ export class PagerComponent implements OnInit, OnDestroy {
       if(ret.last() <= maxPageNo -2){
         ret.push(null);
       }
-      ret.push(maxPageNo);
+      if (maxPageNo > minPageNo) {
+        ret.push(maxPageNo);
+      }
     }
     return ret;
   }
