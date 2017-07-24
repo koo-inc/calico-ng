@@ -1,26 +1,35 @@
-import { Directive, ElementRef, Renderer, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Directive, ElementRef, Input, OnInit, OnChanges, SimpleChanges, Renderer2 } from '@angular/core';
 
 @Directive({
   selector: '[cListTable]'
 })
 export class ListTableDirective implements OnInit, OnChanges {
-  constructor(private el: ElementRef, private renderer: Renderer) {
-    renderer.setElementClass(el.nativeElement, "table", true);
-    renderer.setElementClass(el.nativeElement, "table-bordered", true);
-    renderer.setElementClass(el.nativeElement, "table-list", true);
+  constructor(private el: ElementRef, private renderer: Renderer2) {
+    this.toggleClass("table", true);
+    this.toggleClass("table-bordered", true);
+    this.toggleClass("table-list", true);
   }
 
   @Input() hover: boolean = true;
   @Input() striped: boolean = true;
 
   ngOnInit(): void {
-    this.renderer.setElementClass(this.el.nativeElement, "table-hover", this.hover);
-    this.renderer.setElementClass(this.el.nativeElement, "table-striped", this.striped);
+    this.toggleClass("table-hover", this.hover);
+    this.toggleClass("table-striped", this.striped);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.renderer.setElementClass(this.el.nativeElement, "table-hover", this.hover);
-    this.renderer.setElementClass(this.el.nativeElement, "table-striped", this.striped);
+    this.toggleClass("table-hover", this.hover);
+    this.toggleClass("table-striped", this.striped);
+  }
+
+  private toggleClass(className: string, enabled: boolean) {
+    if (enabled) {
+      this.renderer.addClass(this.el.nativeElement, className);
+    }
+    else {
+      this.renderer.removeClass(this.el.nativeElement, className);
+    }
   }
 }
 
@@ -28,9 +37,9 @@ export class ListTableDirective implements OnInit, OnChanges {
   selector: '[cInfoTable]'
 })
 export class InfoTableDirective {
-  constructor(el: ElementRef, renderer: Renderer) {
-    renderer.setElementClass(el.nativeElement, "table", true);
-    renderer.setElementClass(el.nativeElement, "table-bordered", true);
-    renderer.setElementClass(el.nativeElement, "table-info", true);
+  constructor(el: ElementRef, renderer: Renderer2) {
+    renderer.addClass(el.nativeElement, "table");
+    renderer.addClass(el.nativeElement, "table-bordered");
+    renderer.addClass(el.nativeElement, "table-info");
   }
 }

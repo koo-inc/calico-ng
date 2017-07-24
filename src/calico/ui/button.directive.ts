@@ -1,4 +1,4 @@
-import { Directive, Input, OnInit, ElementRef, Renderer } from '@angular/core';
+import { Directive, Input, OnInit, ElementRef, Renderer2 } from '@angular/core';
 
 @Directive({
   selector: '[cBtn]',
@@ -6,14 +6,15 @@ import { Directive, Input, OnInit, ElementRef, Renderer } from '@angular/core';
 export class ButtonDirective implements OnInit {
   @Input('cBtn') buttonType: string;
 
-  constructor(private el: ElementRef, private renderer: Renderer) {
-    renderer.setElementClass(el.nativeElement, "btn", true);
+  constructor(private el: ElementRef, private renderer: Renderer2) {
+    renderer.addClass(el.nativeElement, "btn");
   }
 
   ngOnInit(): void {
     if (this.buttonType == null) return;
     this.buttonType.split(/[,\s]+/).forEach(type => {
       if (type.trim() == null) return;
-      this.renderer.setElementClass(this.el.nativeElement, `btn-${type.trim()}`, true)});
+      this.renderer.addClass(this.el.nativeElement, `btn-${type.trim()}`);
+    });
   }
 }

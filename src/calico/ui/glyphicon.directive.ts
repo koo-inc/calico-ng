@@ -1,4 +1,4 @@
-import { Directive, Input, OnInit, ElementRef, Renderer } from '@angular/core';
+import { Directive, Input, OnInit, ElementRef, Renderer2 } from '@angular/core';
 
 @Directive({
   selector: '[cGlyphicon]',
@@ -6,13 +6,13 @@ import { Directive, Input, OnInit, ElementRef, Renderer } from '@angular/core';
 export class GlyphiconDirective implements OnInit {
   @Input('cGlyphicon') glyphicon: string;
 
-  constructor(private el: ElementRef, private renderer: Renderer) {
-    renderer.setElementClass(el.nativeElement, "glyphicon", true);
+  constructor(private el: ElementRef, private renderer: Renderer2) {
+    renderer.addClass(el.nativeElement, "glyphicon");
   }
 
   ngOnInit(): void {
     if (this.glyphicon == null) return;
     if (this.glyphicon.match(/^\s*$/)) return;
-    this.renderer.setElementClass(this.el.nativeElement, `glyphicon-${this.glyphicon.trim()}`, true);
+    this.renderer.addClass(this.el.nativeElement, `glyphicon-${this.glyphicon.trim()}`);
   }
 }

@@ -1,4 +1,4 @@
-import { Directive, Input, OnInit, ElementRef, Renderer } from '@angular/core';
+import { Directive, Input, OnInit, ElementRef, Renderer2 } from '@angular/core';
 
 @Directive({
   selector: '[cFontAwesome]',
@@ -6,13 +6,13 @@ import { Directive, Input, OnInit, ElementRef, Renderer } from '@angular/core';
 export class FontAwesomeDirective implements OnInit {
   @Input('cFontAwesome') fontAwesome: string;
 
-  constructor(private el: ElementRef, private renderer: Renderer) {
-    renderer.setElementClass(el.nativeElement, "fa", true);
+  constructor(private el: ElementRef, private renderer: Renderer2) {
+    renderer.addClass(el.nativeElement, "fa");
   }
 
   ngOnInit(): void {
     if (this.fontAwesome == null) return;
     if (this.fontAwesome.match(/^\s*$/)) return;
-    this.renderer.setElementClass(this.el.nativeElement, `fa-${this.fontAwesome.trim()}`, true);
+    this.renderer.addClass(this.el.nativeElement, `fa-${this.fontAwesome.trim()}`);
   }
 }

@@ -1,5 +1,5 @@
 import {
-  Component, Input, ElementRef, AfterContentChecked, Renderer, Inject
+  Component, Input, ElementRef, AfterContentChecked, Renderer2, Inject
 } from '@angular/core';
 import { NgControl, FormControlName } from "@angular/forms";
 import { MESSAGE_CONFIG, MessageConfig } from "../core";
@@ -45,11 +45,11 @@ import { MESSAGE_CONFIG, MessageConfig } from "../core";
 export class ErrorTipComponent implements AfterContentChecked {
   @Input('for') target: NgControl;
 
-  constructor(@Inject(MESSAGE_CONFIG) private messages: MessageConfig, private el: ElementRef, private renderer: Renderer) {
+  constructor(@Inject(MESSAGE_CONFIG) private messages: MessageConfig, private el: ElementRef, private renderer: Renderer2) {
   }
 
   ngAfterContentChecked(): void {
-    this.renderer.setElementStyle(this.el.nativeElement, "display", this.display());
+    this.renderer.setStyle(this.el.nativeElement, "display", this.display());
   }
 
   display(): string {
