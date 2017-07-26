@@ -43,3 +43,6 @@ Thumbs.db
 *.ngfactory.ts
 
 packages/
+package-lock.json
+src/calico/node_modules/
+src/calico/package-lock.json
