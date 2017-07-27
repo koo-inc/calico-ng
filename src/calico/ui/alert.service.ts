@@ -1,21 +1,54 @@
 import { Injectable, Component, Injector, InjectionToken } from "@angular/core";
+import { NavigationStart, Router } from "@angular/router";
 import { trigger, style, transition, animate, keyframes } from "@angular/animations";
 import { randomString } from "../util/string";
 
 export const ALERT_CONFIG = new InjectionToken<AlertConfig>('AlertConfig');
 
+export interface AlertOptions {
+  position?: string;
+  lifetime?: number;
+}
+
+export interface AlertConfig {
+  common?: AlertOptions;
+  success?: AlertOptions;
+  info?: AlertOptions;
+  warning?: AlertOptions;
+  danger?: AlertOptions;
+  removeTypesOnNavigationStart?: string[];
+  removeTypesOnSubmitForm?: string[];
+}
+
+export interface AlertMessage {
+  type: string;
+  title: string;
+  messages: string[];
+  position: string;
+  lifetime: number;
+  key: string;
+  state: string;
+}
+
 @Injectable()
 export class AlertService {
   constructor(
-    private injector: Injector
+    private injector: Injector,
+    private router: Router
   ) {
     try {
-      this.config = this.injector.get(ALERT_CONFIG);
+      this.config = this.injector.get(ALERT_CONFIG, {});
     }
     catch (e) {
       console.warn("use ALERT_CONFIG token to provide AlertConfig instead of 'AlertConfig' string.");
       this.config = this.injector.get('AlertConfig', {});
     }
+
+    this.router.events.subscribe((event) => {
+      if(event instanceof NavigationStart){
+        this.removeByType(...(this.config.removeTypesOnNavigationStart || ['warning', 'danger']));
+      }
+    });
   }
 
   config: AlertConfig;
@@ -26,30 +59,39 @@ export class AlertService {
     'bottom-right': [],
   };
 
-  success(body: string, opts?: AlertOptions): void {
-    this.addMessage(this.createMessage('success', body, opts));
+  success(title: string, messages?: string[], opts?: AlertOptions): void {
+    this.addMessage(this.createMessage('success', title, messages, opts));
   }
 
-  info(body: string, opts?: AlertOptions): void {
-    this.addMessage(this.createMessage('info', body, opts));
+  info(title: string, messages?: string[], opts?: AlertOptions): void {
+    this.addMessage(this.createMessage('info', title, messages, opts));
   }
 
-  warning(body: string, opts?: AlertOptions): void {
-    this.addMessage(this.createMessage('warning', body, opts));
+  warning(title: string, messages?: string[], opts?: AlertOptions): void {
+    this.addMessage(this.createMessage('warning', title, messages, opts));
   }
 
-  danger(body: string, opts?: AlertOptions): void {
-    this.addMessage(this.createMessage('danger', body, opts));
-
+  danger(title: string, messages?: string[], opts?: AlertOptions): void {
+    this.addMessage(this.createMessage('danger', title, messages, opts));
   }
 
-  private createMessage(type: string, body: string, opts?: AlertOptions): AlertMessage {
+  removeByType(...types: string[]): void {
+    Object.forEach<AlertMessage[]>(this.messages, function(messages, pos){
+      messages.remove((e: AlertMessage) => types.indexOf(e.type) != -1);
+    });
+  }
+
+  onSubmitForm(): void {
+    this.removeByType(...(this.config.removeTypesOnSubmitForm || ['warning', 'danger']));
+  }
+
+  private createMessage(type: string, title: string, messages: string[], opts?: AlertOptions): AlertMessage {
     let message: AlertMessage = Object.assign(
       {},
       this.config.common || {},
       this.config[type] || {},
       opts || {},
-      { type: type, body: body },
+      { type: type, title: title, messages: messages },
     ) as AlertMessage;
     message.position = this.normalizePosition(message.position);
     message.key = randomString(8);
@@ -80,28 +122,6 @@ export class AlertService {
   }
 }
 
-export interface AlertOptions {
-  position?: string;
-  lifetime?: number;
-}
-
-export interface AlertConfig {
-  common?: AlertOptions;
-  success?: AlertOptions;
-  info?: AlertOptions;
-  warning?: AlertOptions;
-  danger?: AlertOptions;
-}
-
-export interface AlertMessage {
-  type: string;
-  body: string;
-  position: string;
-  lifetime: number;
-  key: string;
-  state: string;
-}
-
 @Component({
   selector: 'c-alert',
   template: `
@@ -124,7 +144,12 @@ export interface AlertMessage {
           class="alert alert-{{message.type}}"
           [@state]="message.state">
         <a class="close" (click)="alertService.removeMessage(message)">×</a>
-        {{message.body}}
+        <span style="white-space: pre-wrap">{{message.title}}</span>
+        <ng-container *ngIf="message.messages">
+          <ul>
+            <li *ngFor="let m of message.messages">{{m}}</li>
+          </ul>
+        </ng-container>
       </div>
     </ng-template>
   `,

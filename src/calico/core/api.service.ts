@@ -40,10 +40,13 @@ export class Api {
   submit<T> (url: string, form: AbstractControl): Observable<T>;
   submit<T> (url: string, form: any): Observable<T>;
   submit<T> (url: string, form?: any): Observable<T> {
+    if(form instanceof AbstractControl){
+      this.alert.onSubmitForm();
+    }
     form = form instanceof AbstractControl ? form : {value: form, invalid: false, get: (key: string): any => null};
 
     if(form.invalid){
-      this.alert.warning(this.messages['invalidForm'] || '入力値に問題があります。', {lifetime: 3000});
+      this.alert.warning(this.messages['invalidForm'] || '入力値に問題があります。', null, {lifetime: 3000});
       return Observable.empty();
     }
 
@@ -65,16 +68,23 @@ export class Api {
           this.alert.danger(this.messages['internalServerError'] || '500 Internal Server Error');
           throw e;
         }
+        let alertMessages: string[] = [];
         Object.keys(errors).forEach(key => {
           let violation = errors[key].reduce((a:any, b:string) => {a[b] = true; return a}, {});
           let ctrl = form.get(key);
           if (ctrl != null) {
             ctrl.setErrors(violation);
           } else {
-            let message = errors[key].map((msg: string) => this.messages[msg] || msg ).join('\n');
-            this.alert.warning(message);
+            errors[key]
+              .map((msg: string) => this.messages[msg] || msg )
+              .forEach((msg: string) => alertMessages.push(msg));
           }
         });
+        if(alertMessages.isEmpty()){
+          this.alert.warning(this.messages['invalidForm'] || '入力値に問題があります。', null, {lifetime: 3000});
+        }else{
+          this.alert.warning(this.messages['invalidForm'] || '入力値に問題があります。', alertMessages);
+        }
         throw e;
       });
   }
