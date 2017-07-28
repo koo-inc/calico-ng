@@ -44,10 +44,10 @@ export class AlertService {
       this.config = this.injector.get('AlertConfig', {});
     }
 
-    this.router.events.subscribe((event) => {
-      if(event instanceof NavigationStart){
+    this.router.events
+      .filter(e => e instanceof NavigationStart)
+      .subscribe(() => {
         this.removeByType(...(this.config.removeTypesOnNavigationStart || ['warning', 'danger']));
-      }
     });
   }
 
