@@ -175,7 +175,7 @@ export class SearchContext {
     this.search();
   }
 
-  private getKey(): string {
+  getKey(): string {
     return this.route.pathFromRoot
       .map((r: any) => r.url.value)
       .flatten()
@@ -188,7 +188,7 @@ export class SearchContext {
 
 export interface SearchContextConfig {
   search: () => Observable<any>;
-  getForm: () => Observable<any>;
-  toForm:(form: any) => FormGroup;
+  getForm: () => Observable<FormGroup>;
+  toForm:(formValue: any) => FormGroup;
   initialSearch?: boolean;
 }
