@@ -1,5 +1,5 @@
 
-import { encode } from "../../../packages/calico/util/arraybuf/index";
+import { encode } from "../util/arraybuf/index";
 
 export interface Media {
   id?: string;
