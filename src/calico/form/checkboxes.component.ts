@@ -14,7 +14,7 @@ import { RemoteDataService } from "../core/remote-data.service";
         type="button" class="btn btn-default c-checkbox"
         [disabled]="readonly"
         (click)="click(e)"
-      ><span *ngIf="e.selected" class="fa fa-check-square"></span><span *ngIf="!e.selected" class="fa fa-square-o"></span>{{e.label}}</button>
+      ><span *ngIf="e.selected" class="fa fa-check-square fa-fw"></span><span *ngIf="!e.selected" class="fa fa-square-o fa-fw"></span>{{e.label}}</button>
     </span>
     <c-error-tip [for]="control"></c-error-tip>
   `,

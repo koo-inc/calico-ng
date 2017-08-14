@@ -9,7 +9,7 @@ import {FormItem} from "./item";
       [class.invalid]="isInvalid()"
       [disabled]="readonly"
       (click)="toggle()"
-    ><span *ngIf="checked" class="fa fa-check-square"></span><span *ngIf="!checked" class="fa fa-square-o"></span>{{label}}</button>
+    ><span *ngIf="checked" class="fa fa-check-square fa-fw"></span><span *ngIf="!checked" class="fa fa-square-o fa-fw"></span>{{label}}</button>
     <c-error-tip [for]="control"></c-error-tip>
   `,
   styles: [`
