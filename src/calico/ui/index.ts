@@ -11,6 +11,7 @@ import { ModalComponent, ModalHeaderComponent, ModalFooterComponent } from "./mo
 import { ColsComponent } from "./cols.component";
 import { AlertComponent, AlertService } from "./alert.service";
 import { PopoverDirective } from "./popover.directive";
+import { DownloadDirective } from "./download.directive";
 
 @NgModule({
   imports: [
@@ -32,6 +33,7 @@ import { PopoverDirective } from "./popover.directive";
     PopoverDirective,
     ColsComponent,
     AlertComponent,
+    DownloadDirective,
   ],
   exports: [
     InfoTableDirective,
@@ -48,6 +50,7 @@ import { PopoverDirective } from "./popover.directive";
     PopoverDirective,
     ColsComponent,
     AlertComponent,
+    DownloadDirective,
   ]
 })
 export class CalicoUiModule {
