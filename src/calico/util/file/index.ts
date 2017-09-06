@@ -1,5 +1,5 @@
-import { Media } from "calico/type/media";
-import { decode } from "calico/util/arraybuf";
+import { Media } from "../../type/media";
+import { decode } from "../arraybuf";
 
 let _download: (blob: Blob, name: string) => void;
 
