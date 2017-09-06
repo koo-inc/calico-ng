@@ -43,6 +43,7 @@ export class IntegerComponent extends FormattedTextFormItem<number> {
 
   @Input() placeholder: string = '数値';
   @Input() allowNegative: boolean = false;
+  @Input() separation = true;
 
   validFormat(textValue: string): boolean {
     if(textValue == null || textValue.isBlank()){
@@ -59,10 +60,10 @@ export class IntegerComponent extends FormattedTextFormItem<number> {
     if(textValue == null || textValue.isBlank() || !this.validFormat(textValue)){
       return null;
     }
-    return textValue.trim().hankaku().removeAll(',').toNumber();
+    return textValue.trim().hankaku().toNumber();
   }
 
   formatVal(value: number): string {
-    return value == null ? '' : value.format();
+    return value == null ? '' : this.separation ? value.format() : value.toString();
   }
 }
