@@ -1,7 +1,7 @@
 import {
   ViewContainerRef, ElementRef, TemplateRef, Directive, Input, OnDestroy, Renderer2, Renderer
 } from "@angular/core";
-import { ComponentLoaderFactory, PopoverDirective as NgPopoverDirective } from "ngx-bootstrap";
+import { ComponentLoaderFactory, PopoverConfig, PopoverDirective as NgPopoverDirective } from "ngx-bootstrap";
 
 class PopoverListener {
   popovers: PopoverDirective[] = [];
@@ -69,11 +69,10 @@ export class PopoverDirective implements OnDestroy {
     viewContainerRef: ViewContainerRef,
     cis: ComponentLoaderFactory
   ) {
-    let config = {
-      container: 'body',
-      placement: 'bottom',
-      triggers: ''
-    };
+    let config = new PopoverConfig();
+    config.container = 'body';
+    config.placement = 'bottom';
+    config.triggers = '';
     this.popover = new NgPopoverDirective(elementRef, renderer, viewContainerRef, config, cis);
   }
 
