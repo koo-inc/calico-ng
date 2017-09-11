@@ -76,7 +76,7 @@ export class AlertService {
   }
 
   removeByType(...types: string[]): void {
-    Object.forEach<AlertMessage[]>(this.messages, function(messages, pos){
+    Object.forEach(this.messages, (messages: AlertMessage[]) => {
       messages.remove((e: AlertMessage) => types.indexOf(e.type) != -1);
     });
   }

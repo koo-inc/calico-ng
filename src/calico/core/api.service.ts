@@ -69,7 +69,7 @@ export class Api {
           throw e;
         }
         let alertMessages: string[] = [];
-        Object.keys(errors).forEach(key => {
+        Object.keys(errors).forEach((key: string) => {
           let violation = errors[key].reduce((a:any, b:string) => {a[b] = true; return a}, {});
           let ctrl = form.get(key);
           if (ctrl != null) {
