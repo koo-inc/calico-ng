@@ -8,24 +8,24 @@ import { Subscription } from "rxjs";
   template: `
     <span class="c-pager">
       <span class="record-count">
-        検索結果<span>{{info.recordCount}}</span>件
+        検索結果<span>{{_info.recordCount}}</span>件
       </span>
-      <c-select [(ngModel)]="info.perPage"
-        [options]="perPageOptions"
-        optionValue="id"
-        [nullOption]="false"
-        (change)="onChangePerPage()"></c-select>
+      <c-select [(ngModel)]="_info.perPage"
+                [options]="perPageOptions"
+                optionValue="id"
+                [nullOption]="false"
+                (change)="onChangePerPage()"></c-select>
       <ul class="pagination  pagination-sm">
-        <li [class.disabled]="!info.hasPrevPage">
+        <li [class.disabled]="!_info.hasPrevPage">
           <a (click)="moveToPrev()" aria-label="Previous"><span>&laquo;</span></a>
         </li>
-        <li *ngFor="let no of info.pageNos"
-          [class.active]="info.currentPageNo == no"
-          [class.ellipsis]="no == null">
+        <li *ngFor="let no of _info.pageNos"
+            [class.active]="_info.currentPageNo == no"
+            [class.ellipsis]="no == null">
           <a *ngIf="no != null; else noPage" (click)="moveTo(no)">{{no}}</a>
           <ng-template #noPage><a>...</a></ng-template>
         </li>
-        <li [class.disabled]="!info.hasNextPage">
+        <li [class.disabled]="!_info.hasNextPage">
           <a (click)="moveToNext()" aria-label="Next"><span>&raquo;</span></a>
         </li>
       </ul>
@@ -38,7 +38,7 @@ export class PagerComponent implements OnInit, OnDestroy {
     private searchContext: SearchContext,
   ) {}
 
-  private info: PageInfo;
+  _info: PageInfo;
 
   perPageOptions: any[] = [
     { id: 10, name: '10件' },
@@ -65,7 +65,7 @@ export class PagerComponent implements OnInit, OnDestroy {
   }
 
   private initPageInfo(): void {
-    this.info = {
+    this._info = {
       recordCount: this.getRecordCount(),
       perPage: this.getPerPage(),
       currentPageNo: this.getCurrentPageNo(),
@@ -127,7 +127,7 @@ export class PagerComponent implements OnInit, OnDestroy {
   }
 
   onChangePerPage(): void {
-    this.searchContext.onPerPageChange(this.info.perPage);
+    this.searchContext.onPerPageChange(this._info.perPage);
   }
 
   moveTo(no: number): void {
@@ -135,17 +135,17 @@ export class PagerComponent implements OnInit, OnDestroy {
   }
 
   moveToPrev(): void {
-    if(!this.info.hasPrevPage) return;
-    this.searchContext.onPageNoChange(this.info.currentPageNo - 1);
+    if(!this._info.hasPrevPage) return;
+    this.searchContext.onPageNoChange(this._info.currentPageNo - 1);
   }
 
   moveToNext(): void {
-    if(!this.info.hasNextPage) return;
-    this.searchContext.onPageNoChange(this.info.currentPageNo + 1);
+    if(!this._info.hasNextPage) return;
+    this.searchContext.onPageNoChange(this._info.currentPageNo + 1);
   }
 }
 
-interface PageInfo {
+export interface PageInfo {
   recordCount: number;
   perPage: number;
   currentPageNo: number;

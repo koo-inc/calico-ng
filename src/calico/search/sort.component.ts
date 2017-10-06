@@ -25,12 +25,12 @@ export class SortComponent {
     this.searchContext.onSortChange(this.prop);
   }
 
-  private isAsc(): boolean {
+  isAsc(): boolean {
     if(this.searchContext.form.value._sort == null) return false;
     return this.searchContext.form.value._sort.prop == this.prop && this.searchContext.form.value._sort.type == 'ASC'
   }
 
-  private isDesc(): boolean {
+  isDesc(): boolean {
     if(this.searchContext.form.value._sort == null) return false;
     return this.searchContext.form.value._sort.prop == this.prop && this.searchContext.form.value._sort.type == 'DESC'
   }

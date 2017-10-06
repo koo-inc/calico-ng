@@ -22,8 +22,8 @@ export class ModalFooterComponent {}
   template: `
     <div bsModal #modal="bs-modal"
         [config]="{backdrop: backdrop, ignoreBackdropClick: ignoreBackdropClick, keyboard: keyboard}"
-        (onShow)="innerOnShow()"
-        (onHidden)="innerOnHidden()"
+        (onShow)="_innerOnShow()"
+        (onHidden)="_innerOnHidden()"
         class="modal fade" tabindex="-1" role="dialog">
       <div class="modal-dialog" [class.modal-sm]="isSmall" [class.modal-lg]="isLarge">
         <div class="modal-content">
@@ -71,11 +71,11 @@ export class ModalComponent implements OnInit {
   modalDirective: ModalDirective;
   shown: boolean = false;
 
-  private innerOnShow(): void {
+  _innerOnShow(): void {
     this.shown = true;
   }
 
-  private innerOnHidden(): void {
+  _innerOnHidden(): void {
     this.shown = false;
   }
 

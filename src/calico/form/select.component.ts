@@ -10,10 +10,10 @@ import { RemoteDataService } from "../core/remote-data.service";
   selector: 'c-select',
   template: `
     <select class="c-select" [(ngModel)]="selectValue"
-      [class.invalid]="isInvalid()"
-      [disabled]="readonly"
+            [class.invalid]="isInvalid()"
+            [disabled]="readonly"
     >
-      <option *ngFor="let e of innerOptions;trackBy:trackBy" [ngValue]="e.key">{{e.label}}</option>
+      <option *ngFor="let e of _innerOptions;trackBy:trackBy" [ngValue]="e.key">{{e.label}}</option>
     </select>
     <c-error-tip [for]="control"></c-error-tip>
   `,
@@ -52,8 +52,8 @@ export class SelectComponent extends FormItem implements OnChanges, OnDestroy {
   @Input() nullOption: boolean = true;
   @Input() nullOptionLabel: string = '----';
 
-  private innerSelectValue: any;
-  private innerOptions: SelectOption[];
+  _innerSelectValue: any;
+  _innerOptions: SelectOption[];
 
   private subscription: Subscription;
 
@@ -64,16 +64,16 @@ export class SelectComponent extends FormItem implements OnChanges, OnDestroy {
 
   writeValue(value: any): void {
     super.writeValue(value);
-    this.innerSelectValue = this.getOptionKey(value);
+    this._innerSelectValue = this.getOptionKey(value);
   }
 
   get selectValue(): any {
-    return this.innerSelectValue;
+    return this._innerSelectValue;
   }
   set selectValue(key: any) {
-    if (key !== this.innerSelectValue) {
-      this.innerSelectValue = key;
-      let option = this.innerOptions.find((e: SelectOption) => e.key == key);
+    if (key !== this._innerSelectValue) {
+      this._innerSelectValue = key;
+      let option = this._innerOptions.find((e: SelectOption) => e.key == key);
       this.value = option != null ? option.value : null;
     }
   }
@@ -106,9 +106,9 @@ export class SelectComponent extends FormItem implements OnChanges, OnDestroy {
       this.subscription = null;
     }
 
-    this.innerOptions = [];
+    this._innerOptions = [];
     if(this.nullOption){
-      this.innerOptions.push({ key: null, label: this.nullOptionLabel, value: null });
+      this._innerOptions.push({ key: null, label: this.nullOptionLabel, value: null });
     }
     if(this.options != null){
       if(this.options['length'] === 0){
@@ -137,9 +137,9 @@ export class SelectComponent extends FormItem implements OnChanges, OnDestroy {
       let key = this.getOptionKey(option);
       let label = this.getOptionLabel(option);
       let value = this.getOptionValue(option);
-      this.innerOptions.push({ key: key, label: label, value: value });
+      this._innerOptions.push({ key: key, label: label, value: value });
     }
-    this.innerSelectValue = this.getOptionKey(this.value);
+    this._innerSelectValue = this.getOptionKey(this.value);
   }
   private getOptionKey(option: any){
     if(this.optionKey == null || !Object.isObject(option)){
@@ -161,7 +161,7 @@ export class SelectComponent extends FormItem implements OnChanges, OnDestroy {
   }
 }
 
-interface SelectOption {
+export interface SelectOption {
   key: any;
   label: string;
   value: any;

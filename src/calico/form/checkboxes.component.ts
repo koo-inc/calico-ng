@@ -10,7 +10,7 @@ import { RemoteDataService } from "../core/remote-data.service";
   selector: 'c-checkboxes',
   template: `
     <span class="btn-group c-checkboxes" [class.invalid]="isInvalid()">
-      <button *ngFor="let e of innerOptions" 
+      <button *ngFor="let e of _innerOptions" 
         type="button" class="btn btn-default c-checkbox"
         [disabled]="readonly"
         (click)="click(e)"
@@ -51,7 +51,7 @@ export class CheckboxesComponent extends FormItem implements OnChanges, OnDestro
   @Input() optionLabel: string = 'name';
   @Input() optionValue: string = null;
 
-  private innerOptions: CheckboxOption[];
+  _innerOptions: CheckboxOption[];
 
   private subscription: Subscription;
 
@@ -92,7 +92,7 @@ export class CheckboxesComponent extends FormItem implements OnChanges, OnDestro
       this.subscription = null;
     }
 
-    this.innerOptions = [];
+    this._innerOptions = [];
     if(this.options != null){
       if(this.options['length'] === 0){
         return;
@@ -120,7 +120,7 @@ export class CheckboxesComponent extends FormItem implements OnChanges, OnDestro
       let key = this.getOptionKey(option);
       let label = this.getOptionLabel(option);
       let value = this.getOptionValue(option);
-      this.innerOptions.push({ key: key, label: label, value: value, selected: false });
+      this._innerOptions.push({ key: key, label: label, value: value, selected: false });
     }
     this.setSelected(this.value);
   }
@@ -144,7 +144,7 @@ export class CheckboxesComponent extends FormItem implements OnChanges, OnDestro
   }
 
   private getValues(): any[] {
-    return this.innerOptions
+    return this._innerOptions
       .filter((e: CheckboxOption) => e.selected)
       .map((e: CheckboxOption) => e.value);
   }
@@ -154,14 +154,14 @@ export class CheckboxesComponent extends FormItem implements OnChanges, OnDestro
     }
     (<any[]>value)
       .map((e: any) => this.getOptionKey(e))
-      .map((key: any) => this.innerOptions.find((e: CheckboxOption) => e.key == key))
+      .map((key: any) => this._innerOptions.find((e: CheckboxOption) => e.key == key))
       .filter((option: CheckboxOption) => option != null)
       .forEach((option: CheckboxOption) => {option.selected = true;})
   }
 
 }
 
-interface CheckboxOption {
+export interface CheckboxOption {
   key: any;
   label: string;
   value: any;

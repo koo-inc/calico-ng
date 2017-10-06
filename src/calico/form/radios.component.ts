@@ -10,7 +10,7 @@ import { RemoteDataService } from "../core/remote-data.service";
   selector: 'c-radios',
   template: `
     <span class="c-radios btn-group" [class.invalid]="isInvalid()">
-      <button *ngFor="let e of innerOptions" 
+      <button *ngFor="let e of _innerOptions" 
         type="button" class="btn btn-default c-radio"
         [disabled]="readonly"
         [class.active]="e.selected"
@@ -54,7 +54,7 @@ export class RadiosComponent extends FormItem implements OnChanges, OnDestroy {
   @Input() nullOption: boolean = false;
   @Input() nullOptionLabel: string = '----';
 
-  private innerOptions: RadioOption[];
+  _innerOptions: RadioOption[];
 
   private subscription: Subscription;
 
@@ -97,9 +97,9 @@ export class RadiosComponent extends FormItem implements OnChanges, OnDestroy {
       this.subscription = null;
     }
 
-    this.innerOptions = [];
+    this._innerOptions = [];
     if(this.nullOption){
-      this.innerOptions.push({ key: null, label: this.nullOptionLabel, value: null, selected: false });
+      this._innerOptions.push({ key: null, label: this.nullOptionLabel, value: null, selected: false });
     }
     if(this.options != null){
       if(this.options['length'] === 0){
@@ -128,7 +128,7 @@ export class RadiosComponent extends FormItem implements OnChanges, OnDestroy {
       let key = this.getOptionKey(option);
       let label = this.getOptionLabel(option);
       let value = this.getOptionValue(option);
-      this.innerOptions.push({ key: key, label: label, value: value, selected: false });
+      this._innerOptions.push({ key: key, label: label, value: value, selected: false });
     }
     this.setSelected(this.value);
   }
@@ -153,14 +153,14 @@ export class RadiosComponent extends FormItem implements OnChanges, OnDestroy {
 
   private setSelected(value: any){
     let key = this.getOptionKey(value);
-    this.innerOptions.forEach((option) => {
+    this._innerOptions.forEach((option) => {
       option.selected = option.key == key;
     });
   }
 
 }
 
-interface RadioOption {
+export interface RadioOption {
   key: any;
   label: string;
   value: any;

@@ -154,11 +154,11 @@ export class DatepickerComponent extends FormItem {
     this.keepFlag = true;
   }
 
-  onClick(): void {
+  onClick($event: any): void {
     this.popover.open();
   }
 
-  onFocus(): void {
+  onFocus($event: any): void {
     this.popover.open();
   }
 
