@@ -28,7 +28,7 @@ export abstract class FormItem implements ControlValueAccessor, OnInit, OnChange
 
   ngOnChanges(changes: SimpleChanges): void {
     if ('inputValue' in changes) {
-      this.value = changes['inputValue'].value;
+      this.value = changes['inputValue'].currentValue;
     }
   }
 
