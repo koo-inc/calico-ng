@@ -4,12 +4,12 @@
   "experimentalDecorators": true,
   "main": "index.ts",
   "dependencies": {
-    "sugar": "^2.0.4",
-    "sugar-language": "^2.0.4",
     "font-awesome": "^4.7.0",
     "lz-string": "^1.4.4",
-    "moment": "^2.18.1",
-    "ngx-bootstrap": "^1.6.6"
+    "moment": "^2.19.1",
+    "ngx-bootstrap": "^2.0.0-beta.7",
+    "sugar": "^2.0.4",
+    "sugar-language": "^2.0.4"
   },
   "peerDependencies": {
     "@angular/common": "*",

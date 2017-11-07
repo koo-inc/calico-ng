@@ -1,9 +1,9 @@
 import { Observable } from "rxjs";
-import 'rxjs/add/operator/map'
+import { tap } from 'rxjs/operators';
 
 import { Injectable, Inject, Pipe, PipeTransform, Optional, InjectionToken } from "@angular/core";
 import { AbstractControl } from "@angular/forms";
-import { Http, Headers, RequestOptions, Response } from "@angular/http";
+import { HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http";
 
 import { AlertService } from "../ui/alert.service";
 
@@ -13,7 +13,7 @@ export class MessageConfig {
 export const MESSAGE_CONFIG = new InjectionToken<MessageConfig>('MessageConfig');
 
 export interface RequestHook {
-  apply(url: string, form: any, observable: Observable<Response>): Observable<Response>;
+  apply(url: string, form: any, observable: Observable<HttpResponse<any>>): Observable<HttpResponse<any>>;
 }
 export const REQUEST_HOOK = new InjectionToken<RequestHook>('RequestHook');
 
@@ -22,7 +22,7 @@ export class Api {
   private headers: {name: string, value: string}[] = [];
 
   constructor(
-    private http: Http,
+    private http: HttpClient,
     private alert: AlertService,
     @Inject(MESSAGE_CONFIG) private messages: MessageConfig,
     @Optional() @Inject(REQUEST_HOOK) private requestHooks: RequestHook[]
@@ -50,46 +50,47 @@ export class Api {
       return Observable.empty();
     }
 
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    this.headers.forEach(h => headers.append(h.name, h.value));
-    let options = new RequestOptions({headers: headers});
+    let headers = new HttpHeaders();
+    headers = headers.set('Content-Type', 'application/json');
+    headers = this.headers.reduce((headers, h) => headers.append(h.name, h.value), headers);
 
-    let observable = this.http.post(url, JSON.stringify(form.value), options);
+    let observable = this.http.post(url, form.value, {headers: headers, observe: 'response'});
 
-    return this.requestHooks.reduce((o, hook) => hook.apply(url, form, o), observable)
-      .map((req, _) => req.json() as T)
-      .catch((e: any, caught: Observable<any>): Observable<any> => {
-        let errors: any;
-        try {
-          errors = e.json();
-        } catch (e2) {
-          console.error(e);
-          this.alert.danger(this.messages['internalServerError'] || '500 Internal Server Error');
-          throw e;
-        }
-        let alertMessages: string[] = [];
-        Object.keys(errors).forEach((key: string) => {
-          let violation = errors[key].reduce((a:any, b:string) => {a[b] = true; return a}, {});
-          let ctrl = form.get(key);
-          if (ctrl != null) {
-            ctrl.setErrors(violation);
-          } else {
-            errors[key]
-              .map((msg: string) => this.messages[msg] || msg )
-              .forEach((msg: string) => alertMessages.push(msg));
-          }
-        });
-        if(alertMessages.isEmpty()){
-          this.alert.warning(this.messages['invalidForm'] || '入力値に問題があります。', null, {lifetime: 3000});
-        }else{
-          this.alert.warning(this.messages['invalidForm'] || '入力値に問題があります。', alertMessages);
-        }
+    observable = this.requestHooks.reduce((o: Observable<HttpResponse<{}>>, hook) => hook.apply(url, form, o), observable);
+
+    let catcher = tap(null, (e: any): Observable<T> => {
+      if (e == null || e.error == null) {
+        console.error(e);
+        this.alert.danger(this.messages['internalServerError'] || '500 Internal Server Error');
         throw e;
+      }
+
+      let errors = e.error;
+      let alertMessages: string[] = [];
+      Object.keys(errors).forEach((key: string) => {
+        let violation = errors[key].reduce((a:any, b:string) => {a[b] = true; return a}, {});
+        let ctrl = form.get(key);
+        if (ctrl != null) {
+          ctrl.setErrors(violation);
+        } else {
+          errors[key]
+            .map((msg: string) => this.messages[msg] || msg )
+            .forEach((msg: string) => alertMessages.push(msg));
+        }
       });
+      if(alertMessages.isEmpty()){
+        this.alert.warning(this.messages['invalidForm'] || '入力値に問題があります。', null, {lifetime: 3000});
+      }else{
+        this.alert.warning(this.messages['invalidForm'] || '入力値に問題があります。', alertMessages);
+      }
+      throw e;
+    });
+
+    return catcher(observable.map((req: HttpResponse<T>, _: any) => req.body)) as Observable<T>;
   }
 }
 
+// TODO: use Interceptor
 @Injectable()
 export class RequestWatcher implements RequestHook {
   private pendingForms: any[];
@@ -97,12 +98,12 @@ export class RequestWatcher implements RequestHook {
   constructor() {
     this.pendingForms = [];
   }
-  apply(url: string, form: any, observable: Observable<Response>): Observable<Response> {
+  apply(url: string, form: any, observable: Observable<HttpResponse<any>>): Observable<HttpResponse<any>> {
     this.pendingForms.push(form);
-    return observable.do(
-      o => this.pendingForms.remove(form),
-      e => this.pendingForms.remove(form)
-    );
+    return tap(
+      (o: any) => this.pendingForms.remove(form),
+      (e: any) => this.pendingForms.remove(form)
+    )(observable);
   }
 
   isSubmitting(form: any): boolean {

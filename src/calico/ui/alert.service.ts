@@ -117,7 +117,7 @@ export class AlertService {
     }
   }
 
-  private removeMessage(message: any): void {
+  removeMessage(message: any): void {
     this.messages[message.position].remove((e: AlertMessage) => e.key == message.key);
   }
 }
@@ -126,32 +126,24 @@ export class AlertService {
   selector: 'c-alert',
   template: `
     <div class="c-alert">
-      <div class="alert-container top left">
-        <ng-template [ngTemplateOutlet]="tpl" [ngOutletContext]="{position: 'top-left'}"></ng-template>
-      </div>
-      <div class="alert-container top right">
-        <ng-template [ngTemplateOutlet]="tpl" [ngOutletContext]="{position: 'top-right'}"></ng-template>
-      </div>
-      <div class="alert-container bottom left">
-        <ng-template [ngTemplateOutlet]="tpl" [ngOutletContext]="{position: 'bottom-left'}"></ng-template>
-      </div>
-      <div class="alert-container bottom right">
-        <ng-template [ngTemplateOutlet]="tpl" [ngOutletContext]="{position: 'bottom-right'}"></ng-template>
-      </div>
-    </div>
-    <ng-template #tpl let-position="position">
-      <div *ngFor="let message of alertService.messages[position];trackBy: identify"
-          class="alert alert-{{message.type}}"
-          [@state]="message.state">
-        <a class="close" (click)="alertService.removeMessage(message)">×</a>
-        <span style="white-space: pre-wrap">{{message.title}}</span>
-        <ng-container *ngIf="message.messages">
-          <ul>
-            <li *ngFor="let m of message.messages">{{m}}</li>
-          </ul>
+      <ng-container *ngFor="let vertical of ['top', 'bottom']">
+        <ng-container *ngFor="let horizontal of ['left', 'right']">
+          <div class="alert-container" [ngClass]="{'top': vertical == 'top', 'bottom': vertical == 'bottom', 'left': horizontal == 'left', 'right': horizontal == 'right'}">
+            <div *ngFor="let message of messages[vertical + '-' + horizontal];trackBy: identify"
+                 class="alert alert-{{message.type}}"
+                 [@state]="message.state">
+              <a class="close" (click)="removeMessage(message)">×</a>
+              <span style="white-space: pre-wrap">{{message.title}}</span>
+              <ng-container *ngIf="message.messages">
+                <ul>
+                  <li *ngFor="let m of message.messages">{{m}}</li>
+                </ul>
+              </ng-container>
+            </div>
+          </div>
         </ng-container>
-      </div>
-    </ng-template>
+      </ng-container>
+    </div>
   `,
   styles: [`
   `],
@@ -233,5 +225,13 @@ export class AlertComponent {
 
   identify(index: number, message: any): any {
     return message.key;
+  }
+
+  get messages() {
+    return this.alertService.messages;
+  }
+
+  removeMessage(message: any) {
+    this.alertService.removeMessage(message);
   }
 }
