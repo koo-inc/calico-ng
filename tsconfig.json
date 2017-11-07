@@ -18,8 +18,5 @@
     "typeRoots": [
       "./node_modules/@types"
     ]
-  },
-  "angularCompilerOptions": {
-    "genDir": "aot"
   }
 }
