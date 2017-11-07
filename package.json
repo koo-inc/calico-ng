@@ -8,9 +8,9 @@
     "prebuild": "rm -rf ./packages/* && yarn run postbuild",
     "build": "ngc && yarn run copy-resources && yarn run copy-package.json && yarn run pack",
     "postbuild": "find ./src -name '*.ngfactory.ts' -delete && find ./src -name '*.ngsummary.json' -delete",
-    "copy-resources": "cp -R ./src/calico/resources ./packages/calico/",
-    "copy-package.json": "cp ./src/calico/package.json ./packages/calico/",
-    "pack": "cd packages/calico && tar -zcvf ../calico.tar.gz ./"
+    "copy-resources": "cp -R ./src/calico/resources ./packages/calico/src/calico/",
+    "copy-package.json": "cp ./src/calico/package.json ./packages/calico/src/calico/",
+    "pack": "cd packages/calico/src/calico && tar -zcvf ../../../calico.tar.gz ./"
   },
   "private": true,
   "dependencies": {
