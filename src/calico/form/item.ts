@@ -1,10 +1,11 @@
-import { Input, Injector, OnInit, Output, EventEmitter } from '@angular/core';
+import { Input, Injector, OnInit, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { ControlValueAccessor, FormControlName, NgControl } from "@angular/forms";
 
 const noop = () => {};
 
-export abstract class FormItem implements ControlValueAccessor, OnInit {
+export abstract class FormItem implements ControlValueAccessor, OnInit, OnChanges {
   @Input() readonly: boolean = false;
+  @Input("value") inputValue: any;
 
   @Output() cChange: EventEmitter<any> = new EventEmitter();
   @Output() focus: EventEmitter<any> = new EventEmitter();
@@ -19,7 +20,16 @@ export abstract class FormItem implements ControlValueAccessor, OnInit {
   }
 
   ngOnInit(): void {
-    this.control = this.injector.get(NgControl);
+    this.control = this.injector.get(NgControl, null);
+    if (this.control == null) {
+      this.writeValue(this.inputValue);
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if ('inputValue' in changes) {
+      this.value = changes['inputValue'].value;
+    }
   }
 
   get value(): any {
@@ -53,12 +63,14 @@ export abstract class FormItem implements ControlValueAccessor, OnInit {
   }
 
   addError(key: string): void {
+    if (this.control == null) return;
     let errors = this.control.control.errors || {};
     errors[key] = true;
     this.control.control.setErrors(errors);
   }
 
   removeError(key: string): void {
+    if (this.control == null) return;
     let errors = this.control.control.errors || {};
     errors = Object.exclude(errors, (v: any, k: any) => { return k == key;});
     if(Object.keys(errors).length == 0){

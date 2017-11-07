@@ -1,6 +1,6 @@
-import { Component, forwardRef, Injector, Input } from '@angular/core';
-import {NG_VALUE_ACCESSOR} from '@angular/forms';
-import {FormItem} from "./item";
+import { Component, forwardRef, Injector, Input, Output, EventEmitter } from '@angular/core';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { FormItem } from "./item";
 
 @Component({
   selector: 'c-textfield',
@@ -11,6 +11,7 @@ import {FormItem} from "./item";
       [placeholder]="placeholder"
       (focus)="focus.next($event)"
       (blur)="blur.next($event)"
+      (keydown)="fireEnter($event)"
     />
     <c-error-tip [for]="control"></c-error-tip>
   `,
@@ -37,4 +38,12 @@ export class TextFieldComponent extends FormItem {
   }
 
   @Input() placeholder: string = '';
+
+  @Output() cEnter = new EventEmitter();
+
+  fireEnter($event: any) {
+    if ($event.keyCode == 13) {
+      this.cEnter.next($event);
+    }
+  }
 }
