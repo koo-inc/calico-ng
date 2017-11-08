@@ -18,5 +18,10 @@
     "typeRoots": [
       "./node_modules/@types"
     ]
+  },
+  "angularCompilerOptions": {
+    "genDir": "aot",
+    "skipMetadataEmit" : false,
+    "strictMetadataEmit" : true
   }
 }

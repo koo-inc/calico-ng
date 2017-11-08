@@ -1,6 +1,6 @@
 import { Inject, Injectable, InjectionToken, Injector, Optional } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivateChild, RouterStateSnapshot } from "@angular/router";
-import { Observable } from "rxjs";
+import { Observable } from "rxjs/Observable";
 
 import { Api } from "./api.service";
 import { LocalStorageService } from "./local-storage.service";

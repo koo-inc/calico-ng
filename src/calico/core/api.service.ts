@@ -1,4 +1,5 @@
-import { Observable } from "rxjs";
+import { Observable } from "rxjs/Observable";
+import { empty } from "rxjs/observable/empty";
 import { tap } from 'rxjs/operators';
 
 import { Injectable, Inject, Pipe, PipeTransform, Optional, InjectionToken } from "@angular/core";
@@ -47,7 +48,7 @@ export class Api {
 
     if(form.invalid){
       this.alert.warning(this.messages['invalidForm'] || '入力値に問題があります。', null, {lifetime: 3000});
-      return Observable.empty();
+      return empty();
     }
 
     let headers = new HttpHeaders();

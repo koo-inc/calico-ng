@@ -2,11 +2,7 @@ import { Component, forwardRef, Injector, Input, ViewChild } from '@angular/core
 import {NG_VALUE_ACCESSOR} from '@angular/forms';
 import { FormItem } from "./item";
 
-// https://github.com/valor-software/ng2-bootstrap/issues/455
-import 'moment/locale/ja';
-import * as moment from 'moment';
 import { PopoverDirective } from "../ui/popover.directive";
-moment.locale('ja');
 
 @Component({
   selector: 'c-datepicker',
