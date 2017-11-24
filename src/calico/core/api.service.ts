@@ -51,11 +51,12 @@ export class Api {
       return empty();
     }
 
-    let headers = new HttpHeaders();
-    headers = headers.set('Content-Type', 'application/json');
-    headers = this.headers.reduce((headers, h) => headers.append(h.name, h.value), headers);
+    let headers = this.headers.reduce((headers, h) => {
+      headers[h.name] = h.value;
+      return headers;
+    }, {'Content-Type': 'application/json'});
 
-    let observable = this.http.post(url, form.value, {headers: headers, observe: 'response'});
+    let observable = this.http.post(url, form.value, {headers: new HttpHeaders(headers), observe: 'response'});
 
     observable = this.requestHooks.reduce((o: Observable<HttpResponse<{}>>, hook) => hook.apply(url, form, o), observable);
 
