@@ -9,6 +9,8 @@ import {FormItem} from "./item";
       [class.invalid]="isInvalid()"
       [disabled]="readonly"
       [placeholder]="placeholder"
+      (focus)="focus.next($event)"
+      (blur)="blur.next($event)"
       cols="30"
       rows="10"
     ></textarea>

@@ -12,6 +12,8 @@ import { RemoteDataService } from "../core/remote-data.service";
     <select class="c-select" [(ngModel)]="selectValue"
             [class.invalid]="isInvalid()"
             [disabled]="readonly"
+            (focus)="focus.next($event)"
+            (blur)="blur.next($event)"
     >
       <option *ngFor="let e of _innerOptions;trackBy:trackBy" [ngValue]="e.key">{{e.label}}</option>
     </select>
