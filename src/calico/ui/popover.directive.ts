@@ -1,5 +1,5 @@
 import {
-  ViewContainerRef, ElementRef, TemplateRef, Directive, Input, OnDestroy, Renderer2
+  ViewContainerRef, ElementRef, TemplateRef, Directive, Input, Output, OnDestroy, Renderer2, EventEmitter
 } from "@angular/core";
 import { ComponentLoaderFactory } from "ngx-bootstrap/component-loader";
 import { PopoverConfig } from "ngx-bootstrap/popover";
@@ -65,6 +65,19 @@ export class PopoverDirective implements OnDestroy {
     this.popover.popover = popover;
   }
 
+  @Output('beforeClose')
+  private beforeCloseEv = new EventEmitter();
+
+  @Output('close')
+  private closeEv = new EventEmitter();
+
+  @Output('beforeOpen')
+  private beforeOpenEv = new EventEmitter();
+
+  @Output('open')
+  private openEv = new EventEmitter();
+
+
   constructor(
     private elementRef: ElementRef,
     renderer: Renderer2,
@@ -84,19 +97,23 @@ export class PopoverDirective implements OnDestroy {
 
   open(): void {
     if (!this.isOpen) {
+      this.beforeOpenEv.emit();
       this.popover.show();
       let lastPopover = listener.popovers.last();
       if (lastPopover != null && !lastPopover.having(this.elementRef.nativeElement)) {
         listener.clear();
       }
       listener.attach(this);
+      this.openEv.emit();
     }
   }
 
   close(): void {
     if (this.isOpen) {
+      this.beforeCloseEv.emit();
       this.popover.hide();
       listener.detach(this);
+      this.closeEv.emit();
     }
   }
 
@@ -108,6 +125,7 @@ export class PopoverDirective implements OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.close();
     listener.detach(this);
   }
 
