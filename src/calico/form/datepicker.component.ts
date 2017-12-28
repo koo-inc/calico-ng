@@ -66,6 +66,7 @@ export class DatepickerComponent extends FormItem {
   @Input() minDate: Date;
   @Input() maxDate: Date;
   @Input() placeholder: string = '日付';
+  @Input() strictType: boolean = false;
 
   innerTextValue: string;
   textChanged: boolean = false;
@@ -80,7 +81,7 @@ export class DatepickerComponent extends FormItem {
       this.innerTextValue = value;
       let d: Date = this.toDate(this.innerTextValue);
       this.innerDatepickerValue = d;
-      this.value = d != null ? d.toISOString() : null;
+      this.value = d != null ? this.strictType ? d : d.toISOString() : null;
       this.popover.close();
     }
   }
@@ -105,7 +106,7 @@ export class DatepickerComponent extends FormItem {
       this.innerDatepickerValue = value;
       this.innerTextValue = this.formatDate(value);
       this.textChanged = false;
-      this.value = value != null ? value.toISOString() : null;
+      this.value = value != null ? this.strictType ? value : value.toISOString() : null;
     }
   }
 
@@ -132,7 +133,7 @@ export class DatepickerComponent extends FormItem {
 
   private toDate(value: any): Date {
     let d: any = Date.create(value);
-    return d == 'Invalid Date' ? null : d;
+    return d.isValid() ? d : null;
   }
 
   private formatDate(value: Date): string {
