@@ -1,6 +1,7 @@
 import { Observable } from "rxjs/Observable";
 import { empty } from "rxjs/observable/empty";
-import { tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators/tap';
+import { map } from 'rxjs/operators/map';
 
 import { Injectable, Inject, Pipe, PipeTransform, Optional, InjectionToken } from "@angular/core";
 import { AbstractControl } from "@angular/forms";
@@ -61,7 +62,7 @@ export class Api {
     observable = this.requestHooks.reduce((o: Observable<HttpResponse<{}>>, hook) => hook.apply(url, form, o), observable);
 
     let catcher = tap(null, (e: any): Observable<T> => {
-      if (e == null || e.error == null) {
+      if (e == null || e.error == null || !this.isErrorObject(e.error)) {
         console.error(e);
         this.alert.danger(this.messages['internalServerError'] || '500 Internal Server Error');
         throw e;
@@ -88,7 +89,22 @@ export class Api {
       throw e;
     });
 
-    return catcher(observable.map((req: HttpResponse<T>, _: any) => req.body)) as Observable<T>;
+    return catcher(observable.pipe(map((req: HttpResponse<T>, _: any) => req.body))) as Observable<T>;
+  }
+
+  private isErrorObject(error: any) {
+    try {
+      let keys = Object.keys(error);
+      for (let key of keys) {
+        if (!(error[key] instanceof Array)) {
+          return false;
+        }
+      }
+      return true;
+    }
+    catch (e) {
+      return false;
+    }
   }
 }
 
