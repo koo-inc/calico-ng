@@ -9,6 +9,7 @@ import {FormItem} from "./item";
       [class.invalid]="isInvalid()"
       [disabled]="readonly"
       [placeholder]="placeholder"
+      [autocomplete]="autocomplete"
       (focus)="focus.next($event)"
       (blur)="blur.next($event)"
     />
@@ -37,4 +38,5 @@ export class PasswordComponent extends FormItem {
   }
 
   @Input() placeholder: string = '';
+  @Input() autocomplete: string = 'on';
 }
