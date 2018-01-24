@@ -1,7 +1,10 @@
 import {
-  Component, Input, ElementRef, AfterContentChecked, Renderer2, Inject
+  Component, Input, ElementRef, AfterContentChecked, Renderer2, Inject, Injector
 } from '@angular/core';
-import { NgControl, FormControlName } from "@angular/forms";
+import {
+  NgControl, FormControlName, FormArrayName, FormGroupName, FormGroupDirective,
+  ControlContainer, FormGroup, FormArray, NgForm
+} from "@angular/forms";
 import { MESSAGE_CONFIG, MessageConfig } from "../core";
 
 @Component({
@@ -43,9 +46,11 @@ import { MESSAGE_CONFIG, MessageConfig } from "../core";
   `]
 })
 export class ErrorTipComponent implements AfterContentChecked {
-  @Input('for') target: NgControl;
+  @Input('for') target: NgControl | FormGroup | FormArray;
 
-  constructor(@Inject(MESSAGE_CONFIG) private messages: MessageConfig, private el: ElementRef, private renderer: Renderer2) {
+  private form: FormGroupDirective;
+  constructor(@Inject(MESSAGE_CONFIG) private messages: MessageConfig, private el: ElementRef, private renderer: Renderer2, private injector: Injector) {
+    this.form = injector.get(FormGroupDirective);
   }
 
   ngAfterContentChecked(): void {
@@ -57,12 +62,11 @@ export class ErrorTipComponent implements AfterContentChecked {
     return "block";
   }
   excited(): boolean {
-    return this.target && this.target.errors
-      && (!(this.target instanceof FormControlName) || this.target.formDirective.submitted);
+    return this.form && this.form.submitted && this.getKeys().length > 0;
   }
 
   getKeys(): string[] {
-    if (this.target == null) return [];
+    if (this.target == null || this.target.errors == null) return [];
     return Object.keys(this.target.errors) as string[];
   }
 }
