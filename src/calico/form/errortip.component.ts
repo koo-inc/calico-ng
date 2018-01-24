@@ -1,7 +1,10 @@
 import {
   Component, Input, ElementRef, AfterContentChecked, Renderer2, Inject
 } from '@angular/core';
-import { NgControl, FormControlName } from "@angular/forms";
+import {
+  NgControl, FormControlName, FormArrayName, FormGroupName, FormGroupDirective,
+  ControlContainer
+} from "@angular/forms";
 import { MESSAGE_CONFIG, MessageConfig } from "../core";
 
 @Component({
@@ -43,7 +46,7 @@ import { MESSAGE_CONFIG, MessageConfig } from "../core";
   `]
 })
 export class ErrorTipComponent implements AfterContentChecked {
-  @Input('for') target: NgControl;
+  @Input('for') target: NgControl | ControlContainer;
 
   constructor(@Inject(MESSAGE_CONFIG) private messages: MessageConfig, private el: ElementRef, private renderer: Renderer2) {
   }
@@ -58,11 +61,24 @@ export class ErrorTipComponent implements AfterContentChecked {
   }
   excited(): boolean {
     return this.target && this.target.errors
-      && (!(this.target instanceof FormControlName) || this.target.formDirective.submitted);
+      && (this.isSubmittedControl() || this.isSubmittedArray() || this.isSubmittedGroup());
   }
 
   getKeys(): string[] {
     if (this.target == null) return [];
     return Object.keys(this.target.errors) as string[];
+  }
+
+  private isSubmittedControl(): boolean {
+    return this.target && (this.target instanceof FormControlName) && this.target.formDirective.submitted;
+  }
+
+  private isSubmittedArray(): boolean {
+    return this.target && (this.target instanceof FormArrayName) && this.target.formDirective.submitted;
+  }
+
+  private isSubmittedGroup(): boolean {
+    return this.target && (this.target instanceof FormGroupName)
+      && (this.target.formDirective instanceof FormGroupDirective) && this.target.formDirective.submitted;
   }
 }

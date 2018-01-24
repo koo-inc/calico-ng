@@ -19,6 +19,7 @@ import { IntegerComponent } from "./integer.component";
 import { CurrencyComponent } from "./currency.component";
 import { FloatComponent } from "./float.component";
 import { FileComponent } from "./file.component";
+import { FormContainerComponent } from "./container.component";
 import { CalicoUiModule } from "../ui";
 
 @NgModule({
@@ -46,6 +47,7 @@ import { CalicoUiModule } from "../ui";
     CurrencyComponent,
     FloatComponent,
     FileComponent,
+    FormContainerComponent,
   ],
   exports: [
     ErrorTipComponent,
@@ -62,6 +64,7 @@ import { CalicoUiModule } from "../ui";
     CurrencyComponent,
     FloatComponent,
     FileComponent,
+    FormContainerComponent,
   ]
 })
 export class CalicoFormModule {
