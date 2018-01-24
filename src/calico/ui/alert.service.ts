@@ -2,6 +2,7 @@ import { Injectable, Component, Injector, InjectionToken } from "@angular/core";
 import { NavigationStart, Router } from "@angular/router";
 import { trigger, style, transition, animate, keyframes } from "@angular/animations";
 import { randomString } from "../util/string";
+import { filter } from "rxjs/operators";
 
 export const ALERT_CONFIG = new InjectionToken<AlertConfig>('AlertConfig');
 
@@ -45,7 +46,7 @@ export class AlertService {
     }
 
     this.router.events
-      .filter(e => e instanceof NavigationStart)
+      .pipe(filter(e => e instanceof NavigationStart))
       .subscribe(() => {
         this.removeByType(...(this.config.removeTypesOnNavigationStart || ['warning', 'danger']));
     });

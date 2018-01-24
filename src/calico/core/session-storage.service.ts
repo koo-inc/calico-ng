@@ -30,7 +30,7 @@ export class SessionStorageService {
       this.version = config.version;
     }
 
-    if (this.sessionStorage == null && 'sessionStorage' in global) {
+    if (this.sessionStorage == null && 'sessionStorage' in window) {
       this.sessionStorage = sessionStorage;
     }
     else {
