@@ -50,7 +50,7 @@ export class ErrorTipComponent implements AfterContentChecked {
 
   private form: FormGroupDirective;
   constructor(@Inject(MESSAGE_CONFIG) private messages: MessageConfig, private el: ElementRef, private renderer: Renderer2, private injector: Injector) {
-    this.form = injector.get(FormGroupDirective);
+    this.form = injector.get(FormGroupDirective, null);
   }
 
   ngAfterContentChecked(): void {
