@@ -5,6 +5,7 @@ import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
 import { ExtEnumService } from "../core/ext-enum.service";
 import { RemoteDataService } from "../core/remote-data.service";
+import { isPrimitive } from "../util/object";
 
 @Component({
   selector: 'c-select',
@@ -144,19 +145,19 @@ export class SelectComponent extends FormItem implements OnChanges, OnDestroy {
     this._innerSelectValue = this.getOptionKey(this.value);
   }
   private getOptionKey(option: any){
-    if(this.optionKey == null || !Object.isObject(option)){
+    if(this.optionKey == null || isPrimitive(option)){
       return option;
     }
     return option[this.optionKey];
   }
   private getOptionLabel(option: any){
-    if(this.optionLabel == null || !Object.isObject(option)){
+    if(this.optionLabel == null || isPrimitive(option)){
       return option;
     }
     return option[this.optionLabel];
   }
   private getOptionValue(option: any){
-    if(this.optionValue == null || !Object.isObject(option)){
+    if(this.optionValue == null || isPrimitive(option)){
       return option;
     }
     return option[this.optionValue];
