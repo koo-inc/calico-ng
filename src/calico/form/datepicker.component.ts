@@ -34,7 +34,6 @@ import { PopoverDirective } from "../ui/popover.directive";
           formatYear="YYYY年"
           [minDate]="minDate"
           [maxDate]="maxDate"
-          (selectionDone)="selectionDone()"
         ></datepicker>
       </div>
     </ng-template>
@@ -167,11 +166,5 @@ export class DatepickerComponent extends FormItem {
       this.popover.close();
     }
     this.adjustTextValue();
-  }
-
-  selectionDone(): void {
-    setTimeout(() => {
-      this.popover.close();
-    });
   }
 }

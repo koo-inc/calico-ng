@@ -30,6 +30,8 @@ import { FormItem } from "./item";
           [showMeridian]="false"
           [hourStep]="stepHour"
           [minuteStep]="stepMinute"
+          [min]="min"
+          [max]="max"
         ></timepicker>
       </div>
     </ng-template>
@@ -58,9 +60,12 @@ export class TimepickerComponent extends FormItem {
   }
 
   @Input() defaultDate: Date = this.toDate('00:00');
+  @Input() min: Date;
+  @Input() max: Date;
   @Input() stepHour: number = 1;
   @Input() stepMinute: number = 5;
   @Input() placeholder: string = '時間';
+  @Input() strictType: boolean = false;
 
   innerTextValue: string;
   textChanged: boolean = false;
@@ -75,7 +80,7 @@ export class TimepickerComponent extends FormItem {
       this.innerTextValue = value;
       let d: Date = this.toDate(this.innerTextValue);
       this.innerTimepickerValue = d;
-      this.value = d != null ? d.toISOString() : null;
+      this.value = d != null ? this.strictType ? d : d.toISOString() : null;
       this.popover.open();
     }
   }
@@ -101,7 +106,7 @@ export class TimepickerComponent extends FormItem {
       this.innerTimepickerValue = value;
       this.innerTextValue = this.formatDate(value);
       this.textChanged = false;
-      this.value = value != null ? value.toISOString() : null;
+      this.value = value != null ? this.strictType ? value : value.toISOString() : null;
     }
   }
 
