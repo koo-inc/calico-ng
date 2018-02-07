@@ -3,6 +3,8 @@ import { ControlValueAccessor, FormControlName, NgControl } from "@angular/forms
 
 const noop = () => {};
 
+const valueOf = (val: any) => val != null ? val.valueOf() : val;
+
 export abstract class FormItem implements ControlValueAccessor, OnInit, OnChanges {
   @Input() readonly: boolean = false;
   @Input("value") inputValue: any;
@@ -36,7 +38,7 @@ export abstract class FormItem implements ControlValueAccessor, OnInit, OnChange
     return this.innerValue;
   }
   set value(value: any) {
-    if (value !== this.innerValue) {
+    if (valueOf(value) !== valueOf(this.innerValue)) {
       this.innerValue = value;
       this.onChangeCallback(value);
       this.cChange.emit(value);
@@ -44,7 +46,7 @@ export abstract class FormItem implements ControlValueAccessor, OnInit, OnChange
   }
 
   writeValue(value: any): void {
-    if (value !== this.innerValue) {
+    if (valueOf(value) !== valueOf(this.innerValue)) {
       this.innerValue = value;
     }
   }

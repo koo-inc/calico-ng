@@ -14,6 +14,7 @@ import { CheckboxComponent } from "./checkbox.component";
 import { CheckboxesComponent } from "./checkboxes.component";
 import { DatepickerComponent } from "./datepicker.component";
 import { TimepickerComponent } from "./timepicker.component";
+import { TimePointPickerComponent } from "./timepointpicker.component";
 import { TextareaComponent } from "./textarea.component";
 import { IntegerComponent } from "./integer.component";
 import { CurrencyComponent } from "./currency.component";
@@ -42,6 +43,7 @@ import { CalicoUiModule } from "../ui";
     CheckboxesComponent,
     DatepickerComponent,
     TimepickerComponent,
+    TimePointPickerComponent,
     TextareaComponent,
     IntegerComponent,
     CurrencyComponent,
@@ -59,6 +61,7 @@ import { CalicoUiModule } from "../ui";
     CheckboxesComponent,
     DatepickerComponent,
     TimepickerComponent,
+    TimePointPickerComponent,
     TextareaComponent,
     IntegerComponent,
     CurrencyComponent,

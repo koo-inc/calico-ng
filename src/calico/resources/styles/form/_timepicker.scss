@@ -1,6 +1,6 @@
 @import './variables';
 
-c-timepicker {
+c-timepicker, c-timepointpicker {
   .text-input-container {
     position: relative;
 
@@ -20,7 +20,7 @@ c-timepicker {
   }
 }
 
-.c-timepicker-popover {
+.c-timepicker-popover, .c-timepointpicker-popover {
   .btn {
     margin: 0;
     padding: 3px 12px;
@@ -29,5 +29,33 @@ c-timepicker {
   input[type="text"] {
     padding: 3px 12px;
     height: 28px;
+  }
+}
+
+
+.c-timepointpicker-popover {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  height: 55px;
+  min-width: 60px;
+
+  & > * {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-grow: 1;
+    text-align: center;
+  }
+
+  .hours, .minutes {
+    padding-left: 5px;
+    padding-right: 5px;
+    text-align: center;
+
+    .value {
+      display: inline-block;
+      height: 20px;
+    }
   }
 }
