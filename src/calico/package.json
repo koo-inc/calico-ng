@@ -1,6 +1,6 @@
 {
   "name": "calico",
-  "version": "0.5.7",
+  "version": "0.5.8",
   "experimentalDecorators": true,
   "main": "index.ts",
   "dependencies": {
