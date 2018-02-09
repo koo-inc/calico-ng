@@ -22,8 +22,8 @@ export class ModalFooterComponent {}
   template: `
     <div bsModal #modal="bs-modal"
         [config]="{backdrop: backdrop, ignoreBackdropClick: ignoreBackdropClick, keyboard: keyboard}"
-        (onShow)="_innerOnShow()"
-        (onHidden)="_innerOnHidden()"
+        (onShow)="_innerOnShow($event)"
+        (onHidden)="_innerOnHidden($event)"
         class="modal fade" tabindex="-1" role="dialog">
       <div class="modal-dialog" [class.modal-sm]="isSmall" [class.modal-lg]="isLarge">
         <div class="modal-content">
@@ -52,8 +52,8 @@ export class ModalComponent implements OnInit {
   @Input() ignoreBackdropClick: boolean = false;
   @Input() keyboard: boolean = true;
 
-  @Output() get onShow(): EventEmitter<ModalDirective> { return this.modalDirective.onShow;};
-  @Output() get onHide(): EventEmitter<ModalDirective> { return this.modalDirective.onHide;};
+  @Output() onShow = new EventEmitter<ModalDirective>();
+  @Output() onHide = new EventEmitter<ModalDirective>();
 
   toggle(): void {
     this.modalDirective.toggle();
@@ -71,12 +71,14 @@ export class ModalComponent implements OnInit {
   modalDirective: ModalDirective;
   shown: boolean = false;
 
-  _innerOnShow(): void {
+  _innerOnShow(event: any): void {
     this.shown = true;
+    this.onShow.emit(event);
   }
 
-  _innerOnHidden(): void {
+  _innerOnHidden(event: any): void {
     this.shown = false;
+    this.onHide.emit(event);
   }
 
   @ContentChild(ModalHeaderComponent) header: ModalHeaderComponent;
