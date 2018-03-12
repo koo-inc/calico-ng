@@ -1,17 +1,10 @@
-const TIME_PATTERN = /^([0-9]+):([0-9]+)(?::([0-9]+))?$/.compile();
 export class TimePoint {
   hours: number;
   minutes: number;
 
   private invalid = false;
 
-  constructor(minutes: number);
-  constructor(time: string);
-  constructor(minutes: any) {
-    if (typeof minutes == 'string') {
-      let groups = TIME_PATTERN.exec(minutes);
-      minutes = parseInt(groups[1]) * 60 + parseInt(groups[2]);
-    }
+  private constructor(minutes: number) {
     if (minutes == null || Number.isNaN(minutes)) {
       this.invalid = true;
       this.hours = 0;
@@ -87,7 +80,7 @@ export class TimePoint {
       return hours;
     }
 
-    if (typeof minutes == 'number') {
+    if (typeof hours == 'number') {
       minutes = hours;
       return new TimePoint(minutes)
     }
