@@ -119,8 +119,8 @@ export class RequestWatcher implements RequestHook {
   apply(url: string, form: any, observable: Observable<HttpResponse<any>>): Observable<HttpResponse<any>> {
     this.pendingForms.push(form);
     return tap(
-      (o: any) => this.pendingForms.remove(form),
-      (e: any) => this.pendingForms.remove(form)
+      (o: any) => this.pendingForms.remove((f: any) => f === form),
+      (e: any) => this.pendingForms.remove((f: any) => f === form)
     )(observable);
   }
 
