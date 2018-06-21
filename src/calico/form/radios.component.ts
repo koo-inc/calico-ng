@@ -1,8 +1,7 @@
 import { Component, forwardRef, Injector, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { FormItem } from "./item";
-import { Observable } from "rxjs/Observable";
-import { Subscription } from "rxjs/Subscription";
+import { Observable ,  Subscription } from "rxjs";
 import { ExtEnumService } from "../core/ext-enum.service";
 import { RemoteDataService } from "../core/remote-data.service";
 import { isPrimitive } from "../util/object";

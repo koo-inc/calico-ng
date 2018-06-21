@@ -1,7 +1,5 @@
-import { Observable } from "rxjs/Observable";
-import { empty } from "rxjs/observable/empty";
-import { tap } from 'rxjs/operators/tap';
-import { map } from 'rxjs/operators/map';
+import { Observable ,  EMPTY as empty } from "rxjs";
+import { tap ,  map } from 'rxjs/operators';
 
 import { Injectable, Inject, Pipe, PipeTransform, Optional, InjectionToken } from "@angular/core";
 import { AbstractControl } from "@angular/forms";
@@ -49,7 +47,7 @@ export class Api {
 
     if(form.invalid){
       this.alert.warning(this.messages['invalidForm'] || '入力値に問題があります。', null, {lifetime: 3000});
-      return empty();
+      return empty;
     }
 
     let headers = this.headers.reduce((headers, h) => {
@@ -96,7 +94,7 @@ export class Api {
     try {
       let keys = Object.keys(error);
       for (let key of keys) {
-        if (!(error[key] instanceof Array)) {
+        if (!(error[key as string] instanceof Array)) {
           return false;
         }
       }
