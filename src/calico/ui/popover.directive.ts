@@ -12,14 +12,9 @@ class PopoverListener {
   private _listener: (e: Event) => void;
 
   constructor() {
-    this._listener = (function(e: Event) {
-      for (let i = this.popovers.length - 1; i >= 0; i--) {
-        let removed = this.popovers[i]._removeIfNotHaving(e.target as HTMLElement);
-        if (removed == null) {
-          return;
-        }
-      }
-    }).throttle(500).bind(this);
+    this._listener = ((e: Event) => {
+      this.closeUnnecessary(e.target as HTMLElement);
+    }).throttle(500) as (e: Event) => void;
   }
 
   attach(popover: PopoverDirective): void {
@@ -43,14 +38,18 @@ class PopoverListener {
     }
   }
 
-  clear(): void {
+  closeUnnecessary(elm: HTMLElement) {
     for (let i = this.popovers.length - 1; i >= 0; i--) {
-      this.popovers[i].close();
+      let removed = this.popovers[i]._removeIfNotHaving(elm);
+      if (removed == null) {
+        return;
+      }
     }
   }
 }
 
 let listener = new PopoverListener();
+
 
 @Directive({
   selector: '[cPopover]',
@@ -99,10 +98,7 @@ export class PopoverDirective implements OnDestroy {
     if (!this.isOpen) {
       this.beforeOpenEv.emit();
       this.popover.show();
-      let lastPopover = listener.popovers.last();
-      if (lastPopover != null && !lastPopover.having(this.elementRef.nativeElement)) {
-        listener.clear();
-      }
+      listener.closeUnnecessary(this.elementRef.nativeElement);
       listener.attach(this);
       this.openEv.emit();
     }
@@ -130,6 +126,10 @@ export class PopoverDirective implements OnDestroy {
   }
 
   private get popoverContent(): HTMLElement {
+    if (this.popover['_popover']['_componentRef'] == null) {
+      console.debug("this.popover['_popover']['_componentRef'] is null");
+      return null;
+    }
     return this.popover['_popover']['_componentRef']['_viewRef']['rootNodes'][0] as HTMLElement;
   }
 
@@ -150,6 +150,7 @@ export class PopoverDirective implements OnDestroy {
 
     for (let i = 0; i < elements.length; i++) {
       let element = elements[i];
+      if (element == null) continue;
       if (target === element) {
         return true;
       }
