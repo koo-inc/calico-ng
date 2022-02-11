@@ -405,8 +405,8 @@ chokidar@^2.0.3:
     fsevents "^1.2.2"
 
 chownr@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/chownr/-/chownr-1.0.1.tgz#e2a75042a9551908bebd25b8523d5f9769d79181"
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/chownr/-/chownr-1.1.4.tgz#6fc9d7b42d32a583596337666e7d08084da2cc6b"
 
 class-utils@^0.3.5:
   version "0.3.6"
@@ -1667,7 +1667,13 @@ rimraf@2, rimraf@^2.5.1, rimraf@^2.6.1:
   dependencies:
     glob "^7.0.5"
 
-rxjs@^6.0.0, rxjs@^6.2.1:
+rxjs@6.3.3:
+  version "6.3.3"
+  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.3.3.tgz#3c6a7fa420e844a81390fb1158a9ec614f4bad55"
+  dependencies:
+    tslib "^1.9.0"
+
+rxjs@^6.0.0:
   version "6.2.1"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.2.1.tgz#246cebec189a6cbc143a3ef9f62d6f4c91813ca1"
   dependencies:
@@ -1904,13 +1910,13 @@ sugar-core@^2.0.0:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/sugar-core/-/sugar-core-2.0.4.tgz#9db0730e6c47eb7d28184a79c4ab18b2b7946ca0"
 
-sugar-language@^2.0.4:
+sugar-language@2.0.4:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/sugar-language/-/sugar-language-2.0.4.tgz#37172892ea241f6f2047bb34524e560c6fc6ee32"
   dependencies:
     sugar-core "^2.0.0"
 
-sugar@^2.0.4:
+sugar@2.0.4:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/sugar/-/sugar-2.0.4.tgz#79a6fa4dabc587fb855a52ee7176dd042bf757b0"
   dependencies:
