@@ -1,0 +1,35 @@
+import { Injector } from '@angular/core';
+import { PopoverDirective } from '../ui/popover.directive';
+import { FormItem } from "./item";
+import { TimePoint } from "../type/time";
+export declare class TimePointPickerComponent extends FormItem {
+    constructor(injector: Injector);
+    defaultTimePoint: TimePoint;
+    min: TimePoint;
+    max: TimePoint;
+    stepHour: number;
+    stepMinute: number;
+    placeholder: string;
+    innerHours: number;
+    innerMinutes: number;
+    addHours(hours: number): void;
+    addMinutes(minutes: number): void;
+    private justifyInnerValues();
+    private justifyTimeParts(h, m);
+    private writeBackToTextValue();
+    readonly hoursText: any;
+    readonly minutesText: any;
+    innerTextValue: string;
+    textChanged: boolean;
+    textValue: string;
+    isInvalidText(): boolean;
+    adjustTextValue(): void;
+    writeValue(value: any): void;
+    popover: PopoverDirective;
+    keepFlag: boolean;
+    keep(): void;
+    onClick($event: any): void;
+    onFocus($event: any): void;
+    onBlur($event: any): void;
+    onKeydown($event: any): void;
+}
