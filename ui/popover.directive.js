@@ -4,12 +4,16 @@ import { PopoverConfig } from "ngx-bootstrap/popover";
 import { PopoverDirective as NgPopoverDirective } from "ngx-bootstrap/popover";
 var PopoverListener = /** @class */ (function () {
     function PopoverListener() {
-        var _this = this;
         this.popovers = [];
         this._triggerEvents = ['focus', 'mousedown', 'touchstart', 'click'];
         this._listener = (function (e) {
-            _this.closeUnnecessary(e.target);
-        }).throttle(500);
+            for (var i = this.popovers.length - 1; i >= 0; i--) {
+                var removed = this.popovers[i]._removeIfNotHaving(e.target);
+                if (removed == null) {
+                    return;
+                }
+            }
+        }).throttle(500).bind(this);
     }
     PopoverListener.prototype.attach = function (popover) {
         var _this = this;
@@ -34,12 +38,9 @@ var PopoverListener = /** @class */ (function () {
             });
         }
     };
-    PopoverListener.prototype.closeUnnecessary = function (elm) {
+    PopoverListener.prototype.clear = function () {
         for (var i = this.popovers.length - 1; i >= 0; i--) {
-            var removed = this.popovers[i]._removeIfNotHaving(elm);
-            if (removed == null) {
-                return;
-            }
+            this.popovers[i].close();
         }
     };
     return PopoverListener;
@@ -76,7 +77,10 @@ var PopoverDirective = /** @class */ (function () {
         if (!this.isOpen) {
             this.beforeOpenEv.emit();
             this.popover.show();
-            listener.closeUnnecessary(this.elementRef.nativeElement);
+            var lastPopover = listener.popovers.last();
+            if (lastPopover != null && !lastPopover.having(this.elementRef.nativeElement)) {
+                listener.clear();
+            }
             listener.attach(this);
             this.openEv.emit();
         }
@@ -101,10 +105,6 @@ var PopoverDirective = /** @class */ (function () {
     };
     Object.defineProperty(PopoverDirective.prototype, "popoverContent", {
         get: function () {
-            if (this.popover['_popover']['_componentRef'] == null) {
-                console.debug("this.popover['_popover']['_componentRef'] is null");
-                return null;
-            }
             return this.popover['_popover']['_componentRef']['_viewRef']['rootNodes'][0];
         },
         enumerable: true,
@@ -125,8 +125,6 @@ var PopoverDirective = /** @class */ (function () {
             return false;
         for (var i = 0; i < elements.length; i++) {
             var element = elements[i];
-            if (element == null)
-                continue;
             if (target === element) {
                 return true;
             }
